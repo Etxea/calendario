@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Calendario{% endblock %}
+
+{% block content %}
+<h1>Vista calendario para la semana numero {{ num_semana }} del año {{ ano }} {{ semana.getBegin.format('Y-m-d') }} al {{ semana.getEnd.format('Y-m-d') }} </h1>
+<a href="/~patataman/index.php/calendario/{{ ano }}/{{num_semana -1 }}">Anterior</a> - 
+<a href="/~patataman/index.php/calendario/{{ ano }}/{{num_semana +1 }}">Siguiente</a>
+<table>
+
+<thead>
+<th>Doctor</th>
+{% for dia in semana %}
+<th>{{ dia }} ({{ dia.getBegin.format('m-d') }}) </th>
+{% endfor %}
+</thead>
+<tr>
+	<td>Doctr 1</td>
+	{% for dia in semana %}
+	<td>eventos del {{ dia.getBegin.format('m-d') }}</td>
+{% endfor %}
+</tr>
+<tr>
+	<td>Doctr 2</td>
+	{% for dia in semana %}
+	<td>eventos del {{ dia.getBegin.format('m-d') }}</td>
+{% endfor %}
+</tr>
+<tr>
+	<td>Doctr 3</td>
+	{% for dia in semana %}
+	<td>eventos del {{ dia.getBegin.format('m-d') }}</td>
+{% endfor %}
+</tr>
+</table>
+{% endblock %}
+
