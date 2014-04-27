@@ -1,23 +1,116 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{% block title '' %} - My Silex Application</title>
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<!-- Title and other stuffs -->
+<title>{% block title '' %} - UroGes Cruces</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="">
 
-        <link href="{{ app.request.basepath }}/css/main.css" rel="stylesheet" type="text/css" />
+<!-- estilos -->
+<link href="style/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="style/font-awesome.css"> 
+<link rel="stylesheet" href="style/jquery-ui-1.9.2.custom.min.css"> 
+<link rel="stylesheet" href="style/fullcalendar.css">
+<link rel="stylesheet" href="style/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="style/daterangepicker-bs3.css" />
+<link href="style/style.css" rel="stylesheet">
+<link href="style/widgets.css" rel="stylesheet"> 
 
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
-            _gaq.push(['_trackPageview']);
 
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
-        </script>
-    </head>
-    <body>
-        {% block content %}{% endblock %}
-    </body>
+<!-- HTML5 Support for IE -->
+<!--[if lt IE 9]>
+<script src="js/html5shim.js"></script>
+<![endif]-->
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="img/favicon/favicon.png">
+<style>
+th {font-weight: normal;}
+.btn-xa {padding:0px 2px}
+</style>
+</head>
+
+<body>
+<header>
+<div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
+
+<div class="container">
+<div class="navbar-header">
+<button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse"><span>Menu</span></button>
+<a href="#" class="pull-left menubutton hidden-xs"><i class="fa fa-bars"></i></a>
+<a href="index.html" class="navbar-brand">Uro<span class="bold">Ges</span>Cruces</a>
+</div>
+
+<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation"> 
+<!-- Usuarios -->
+<ul class="nav navbar-nav pull-right">
+<li class="dropdown pull-right user-data"><a data-toggle="dropdown" class="dropdown-toggle" href="#"><img src="img/user1.png"> Antón <span class="bold">Arruza</span> <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li><a href="login.html"><i class="fa fa-key"></i> Logout</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</header>
+
+<!-- Main content starts -->
+
+<div class="content">
+
+{% include "menu.html" %}
+
+<!-- Main bar -->
+<div class="mainbar">
+
+    {% block content %}{% endblock %}
+
+</div><!-- Fin container -->
+</div><!-- Fin Matter -->
+</div>
+
+</div><!-- Fin Mainbar -->
+
+<div class="clearfix"></div>
+
+</div><!-- Fin Content -->
+
+<!-- Footer -->
+<footer>
+<div class="container">
+<div class="row">
+<div class="col-md-12">
+<!-- Copyright info -->
+<p class="copy">Copyright &copy; 2013 | <a href="#">Your Site</a> </p>
+</div>
+</div>
+</div>
+</footer> 
+
+<!-- Scroll to top -->
+<span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
+
+<!-- JS -->
+<script src="js/jquery.js"></script> <!-- jQuery -->
+<script src="js/bootstrap.js"></script> <!-- Bootstrap -->
+<script src="js/jquery-ui-1.9.2.custom.min.js"></script> <!-- jQuery UI -->
+<script src="js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
+
+<!-- Daterangepicker -->
+<script src="js/moment.min.js"></script>
+<script src="js/daterangepicker.js"></script>
+
+<script src="js/bootstrap-datetimepicker.min.js"></script> <!-- Date picker -->
+
+<script src="js/jquery.slimscroll.min.js"></script> <!-- jQuery SlimScroll -->
+<script src="js/custom.js"></script> <!-- Custom codes -->
+<script src="js/cal.js"></script> <!-- Index Javascripts -->
+
+
+</body>
 </html>

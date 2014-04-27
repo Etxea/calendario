@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<!-- Title and other stuffs -->
+<title>UroGes Cruces</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="">
+
+<!-- estilos -->
+<link href="style/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="style/font-awesome.css"> 
+<link rel="stylesheet" href="style/jquery-ui-1.9.2.custom.min.css"> 
+<link rel="stylesheet" href="style/fullcalendar.css">
+<link rel="stylesheet" href="style/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="style/uniform.default.css"> 
+<link rel="stylesheet" href="style/daterangepicker-bs3.css" />
+<link rel="stylesheet" href="style/bootstrap-switch.css">
+<link href="style/style.css" rel="stylesheet">
+<link href="style/widgets.css" rel="stylesheet"> 
+
+<!-- HTML5 Support for IE -->
+<!--[if lt IE 9]>
+<script src="js/html5shim.js"></script>
+<![endif]-->
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="img/favicon.png">
+
+</head>
+
+<body>
+<header>
+<div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
+
+<div class="container">
+<div class="navbar-header">
+<button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse"><span>Menu</span></button>
+<a href="#" class="pull-left menubutton hidden-xs"><i class="fa fa-bars"></i></a>
+<a href="index.html" class="navbar-brand">Uro<span class="bold">Ges</span>Cruces</a>
+</div>
+
+<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation"> 
+<!-- Usuarios -->
+<ul class="nav navbar-nav pull-right">
+<li class="dropdown pull-right user-data"><a data-toggle="dropdown" class="dropdown-toggle" href="#"><img src="img/user1.png"> Antón <span class="bold">Arruza</span> <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+<li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
+<li><a href="login.html"><i class="fa fa-key"></i> Logout</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</header>
+
+<!-- Main content starts -->
+
+<div class="content">
+
+<!-- Sidebar -->
+<div class="sidebar">
+<div class="sidebar-dropdown"><a href="#">Menú</a></div>
+
+<ul id="nav">
+<li><a href="programado.html"><i class="fa fa-microphone"></i> <span>Programado</span></a></li>
+<li><a href="programacion-servicio.html"><i class="fa fa-sitemap"></i> <span>Programación servicio</span></a></li>
+<li class="has_sub"><a href="#"><i class="fa fa-tachometer"></i> <span>Configuración año</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+<ul>
+<li><a href="vacaciones.html"><i class="fa fa-sun-o"></i> Vacaciones</a></li>
+<li><a href="graciables.html"><i class="fa fa-gift"></i> Graciables</a></li>
+<li><a href="baja-laboral.html"><i class="fa fa-wheelchair"></i> Baja laboral</a></li>
+<li><a href="congresos.html"><i class="fa fa-coffee"></i> Congresos</a></li>
+<li><a href="investigacion.html"><i class="fa fa-flask"></i> Investigación</a></li>
+<li><a href="reunion.html"><i class="fa fa-comments"></i> Reunión</a></li>
+</ul>
+</li> 
+<li><a href="calendario.html" class="open"><i class="fa fa-calendar"></i> <span>Calendario</span></a></li>
+<li class="has_sub"><a href="#"><i class="fa fa-tasks"></i> <span>Configuración servicio</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+<ul>
+<li><a href="servicios.html"><i class="fa fa-align-justify"></i> Listado de servicios</a></li>
+<li><a href="subtipos.html"><i class="fa fa-th-list"></i> Subtipos de servicios</a></li>
+</ul>
+</li> 
+<li class="has_sub"><a href="#"><i class="fa fa-user-md"></i> <span>Usuarios</span> <span class="pull-right"><i class="fa fa-chevron-left"></i></span></a>
+<ul>
+<li><a href="usuarios.html"><i class="fa fa-align-justify"></i> Listado de usuarios</a></li>
+<li><a href="usuario-alta.html"><i class="fa fa-plus-square"></i> Agregar usuario</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<!-- Fin Sidebar -->
+
+<!-- Main bar -->
+<div class="mainbar">
+
+<!-- Page heading -->
+<div class="page-head">
+<h2 class="pull-left">Calendario</h2>
+
+<div class="clearfix"></div>
+
+</div><!-- Fin Page heading -->
+
+
+<!-- Matter -->
+
+<div class="matter">
+<div class="container">
+<div class="row">
+<div class="col-md-12">
+<!-- Widget -->
+<div class="widget">
+<!-- Widget title -->
+<div class="widget-head">
+<div class="pull-left">Calendario</div>
+<div class="widget-icons pull-right">
+<a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
+<a href="#" class="wclose"><i class="fa fa-times"></i></a>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="widget-content">
+<!-- Widget content -->
+<div class="padd">
+<!-- Below line produces calendar. I am using FullCalendar plugin. -->
+<div id="calendar"></div>
+</div>
+
+
+</div><!-- Fin widget-content -->
+</div><!-- Fin widget -->
+</div><!-- Fin col-md-12 -->
+</div><!-- Fin row -->
+
+</div><!-- Fin container -->
+</div><!-- Fin Matter -->
+
+</div><!-- Fin Mainbar -->	
+   
+<div class="clearfix"></div>
+
+</div><!-- Content ends -->
+
+<!-- Footer -->
+<footer>
+<div class="container">
+<div class="row">
+<div class="col-md-12">
+<!-- Copyright info -->
+<p class="copy">Copyright &copy; 2013 | <a href="#">Your Site</a> </p>
+</div>
+</div>
+</div>
+</footer> 
+
+<!-- Scroll to top -->
+<span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
+
+<!-- JS -->
+<script src="js/jquery.js"></script> <!-- jQuery -->
+<script src="js/bootstrap.js"></script> <!-- Bootstrap -->
+<script src="js/jquery-ui-1.9.2.custom.min.js"></script> <!-- jQuery UI -->
+<script src="js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
+
+<!-- Daterangepicker -->
+<script src="js/moment.min.js"></script>
+<script src="js/daterangepicker.js"></script>
+
+<script src="js/bootstrap-datetimepicker.min.js"></script> <!-- Date picker -->
+
+<script src="js/jquery.slimscroll.min.js"></script> <!-- jQuery SlimScroll -->
+<script src="js/custom.js"></script> <!-- Custom codes -->
+<script src="js/cal.js"></script> <!-- Index Javascripts -->
+
+
+</body>
+</html>
