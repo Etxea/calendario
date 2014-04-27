@@ -1,0 +1,14 @@
+{
+        "require": {
+            "yohang/calendr": "1.*",
+            "silex/silex": "~1.1",
+	    "twig/twig": ">=1.8,<2.0-dev",
+            "symfony/twig-bridge": "~2.3",
+	    "sabre/vobject" : "2.1.*",
+	    "sabre/dav" : "1.8.*",
+	    "etxea/sabremw": "dev-master"	    
+        },
+        "autoload": {
+			"psr-0": { "SabreMW": "vendor/etxea/sabremw/lib" }
+		} 
+}
