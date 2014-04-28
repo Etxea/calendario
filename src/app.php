@@ -5,6 +5,7 @@ use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
+use Doctrine\DBAL\Connection;
 
 $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());

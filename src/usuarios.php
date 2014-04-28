@@ -2,7 +2,8 @@
 
 $usuarios = $app['controllers_factory'];
 $usuarios->get('/', function () use ($app) {
-    return $app['twig']->render('usuarios.html', array());
+    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM usuarios');
+    return $app['twig']->render('usuarios.html', array('lista_usuarios'=>$lista_usuarios));
 })
 ->bind('usuarios')
 ;
