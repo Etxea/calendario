@@ -14,6 +14,49 @@ $app->get('/', function () use ($app) {
 ->bind('homepage')
 ;
 
+$app->get('/programacion-servicio', function () use ($app) {
+    return $app['twig']->render('programacion-servicio.html', array());
+})
+->bind('programacion-servicio')
+;
+
+$app->get('vacaciones', function () use ($app) {
+    return $app['twig']->render('vacaciones.html', array());
+})
+->bind('vacaciones')
+;
+
+$app->get('graciables', function () use ($app) {
+    return $app['twig']->render('graciables.html', array());
+})
+->bind('graciables')
+;
+
+$app->get('baja-laboral', function () use ($app) {
+    return $app['twig']->render('baja-laboral.html', array());
+})
+->bind('baja-laboral')
+;
+
+$app->get('congresos', function () use ($app) {
+    return $app['twig']->render('congresos.html', array());
+})
+->bind('congresos')
+;
+
+$app->get('investigacion', function () use ($app) {
+    return $app['twig']->render('investigacion.html', array());
+})
+->bind('investigacion')
+;
+
+$app->get('reunion', function () use ($app) {
+    return $app['twig']->render('reunion.html', array());
+})
+->bind('reunion')
+;
+
+
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
         return;
