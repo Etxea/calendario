@@ -26,7 +26,7 @@
 <div class="widget">
 
 <div class="widget-head">
-<div class="pull-left">Edición de usuario</div>
+<div class="pull-left">Edición de usuario. {{mensaje}}</div>
 <div class="clearfix"></div>
 </div>
 
@@ -36,7 +36,7 @@
 
 <div class="form quick-post">
 <!-- Edit profile form (not working)-->
-<form class="form-horizontal" action={{ url('usuarios-alta') }}>
+<form class="form-horizontal" action="{{ url('usuarios-editar',{ 'id': id_usuario }) }}" method="post" >
 
 {% include "usuarios-form.html" %}
 
