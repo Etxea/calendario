@@ -16,7 +16,7 @@
 
 <ul>
 
-<li><a href="{{ app.url_generator.generate('vacaciones')}}"><i class="fa fa-sun-o"></i> Vacaciones</a></li>
+<li><a href="{{ url('vacaciones',{'ano': 2014, 'mes': 01})}}"><i class="fa fa-sun-o"></i> Vacaciones</a></li>
 
 <li><a href="{{ app.url_generator.generate('graciables')}}"><i class="fa fa-gift"></i> Graciables</a></li>
 
@@ -50,9 +50,9 @@
 
 <ul>
 
-<li><a href="usuarios.html"><i class="fa fa-align-justify"></i> Listado de usuarios</a></li>
+<li><a href="{{ url('usuarios') }}"><i class="fa fa-align-justify"></i> Listado de usuarios</a></li>
 
-<li><a href="usuario-alta.html"><i class="fa fa-plus-square"></i> Agregar usuario</a></li>
+<li><a href="{{ url('usuarios-alta') }}"><i class="fa fa-plus-square"></i> Agregar usuario</a></li>
 
 </ul>
 

@@ -20,8 +20,10 @@ $app->get('/programacion-servicio', function () use ($app) {
 ->bind('programacion-servicio')
 ;
 
-$app->get('vacaciones', function () use ($app) {
-    return $app['twig']->render('vacaciones.html', array());
+$app->get('vacaciones/{ano}/{mes}', function ($ano,$mes) use ($app) {
+    $ano = $app->escape($ano);
+    $ano = $app->escape($ano);
+    return $app['twig']->render('vacaciones.html', array("año"=>$ano, "mes"=>$mes));
 })
 ->bind('vacaciones')
 ;
@@ -55,6 +57,8 @@ $app->get('reunion', function () use ($app) {
 })
 ->bind('reunion')
 ;
+
+$app->mount('/usuarios', include 'usuarios.php');
 
 
 $app->error(function (\Exception $e, $code) use ($app) {
