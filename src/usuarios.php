@@ -9,13 +9,37 @@ $usuarios->get('/', function () use ($app) {
 ;
 
 $usuarios->match('/alta', function () use ($app) {
+    $form = $app['form.factory']->createBuilder('form')
+        ->add('nombre')
+        ->add('apellidos')
+        ->add('username')
+        ->add('password')
+        ->add('categoria', 'choice', array(
+            'choices' => array(1 => 'Jefe de servicio/sección', 2 => 'Adjunto', 3 => 'Residente'),
+            'expanded' => true,
+        ))
+        ->add('rol', 'choice', array(
+            'choices' => array(0 => 'estandar', 1 => 'administrador'),
+            'expanded' => true,
+        ))
+        ->getForm();
     if ($app['request']->getMethod() == "POST" ) {
-        echo "POST";
-        $mensaje = "Vamos a dar de alta";
+        
+        $form->bind($app['request']);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            //ahora a actualizar la BBDD
+            unset($data['id']);
+            $app['db']->insert('usuarios',$data);
+            $mensaje = "usuario creado";
+            return $app->redirect($app['url_generator']->generate('usuarios'));
+        } else {
+            $mensaje = "Formulario mal";
+        }
     } else {
         $mensaje = "Introduce los datos";
     }
-    return $app['twig']->render('usuarios-alta.html', array('mensaje' => $mensaje ));
+    return $app['twig']->render('usuarios-alta.html', array('mensaje' => $mensaje, 'form' => $form->createView()));
 })
 ->bind('usuarios-alta')
 ;
@@ -41,7 +65,6 @@ $usuarios->match('/editar/{id}', function ($id) use ($app) {
         if ($form->isValid()) {
             $mensaje = "Vamos guardar";
             $data = $form->getData();
-            var_dump($data);
             //ahora a actualizar la BBDD
             unset($data['id']);
             $app['db']->update('usuarios',$data,array('id' => $id));
@@ -49,11 +72,9 @@ $usuarios->match('/editar/{id}', function ($id) use ($app) {
         } else {
             $mensaje = "Formulario mal";
         }
-        
     } else {
         $mensaje = "vamos a editar";
         
-            
     }
     
     return $app['twig']->render('usuarios-editar.html', array('id_usuario'=> $id ,'mensaje'=>$mensaje,'usuario'=>$usuario,'form' => $form->createView()));
