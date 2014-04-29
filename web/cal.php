@@ -8,16 +8,8 @@ This server features CalDAV support
 
 */
 
-// settings
-date_default_timezone_set('Europe/Madrid');
-
-// If you want to run the SabreDAV server in a custom location (using mod_rewrite for instance)
-// You can override the baseUri here.
-$baseUri = '/~patataman/cal.php';
-
 /* Database */
-$pdo = new \PDO('mysql:dbname=sabre','root','t3cn0farsa!');
-#$pdo = new \PDO('sqlite:/var/www/calendar/data/db.sqlite');
+$pdo = new \PDO('mysql:dbname='.$db_name,$db_user,$db_pass);
 $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 //Mapping PHP errors to exceptions
@@ -27,7 +19,7 @@ function exception_error_handler($errno, $errstr, $errfile, $errline ) {
 set_error_handler("exception_error_handler");
 
 // Files we need
-require_once 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 // Backends
 $authBackend = new \Sabre\DAV\Auth\Backend\PDO($pdo);
