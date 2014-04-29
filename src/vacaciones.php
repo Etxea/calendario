@@ -15,12 +15,21 @@ $vacaciones->get('/', function () use ($app) {
 $vacaciones->get('/{ano}/{mes}/', function ($ano,$mes) use ($app) {
     $lista_vacaciones = array();
     //Usamos la librería calendr para sacar los días del mes y año
-    $dias_mes = 
+    $calendario_mes = $app['calendr']->getMonth($ano, $mes);
+    //var_dump($calendario_mes);
     $lista_usuarios = $app['db']->fetchAll('SELECT * FROM usuarios');
     foreach($lista_usuarios as  $usuario) {
+        //echo "Usuario: ".$usuario['username'];
         $lista_vacaciones[$usuario['username']]['id'] = $usuario['id'];
+        $lista_vacaciones[$usuario['username']]['vacaciones'] = array();
+        //recorremos las semanas del mes
+        foreach($calendario_mes->getDays()  as $dia) {
+            //echo "Día ".$dia->format("d")."\n";
+            //rellenamos los días
+            //esto hay que leerlo de BBDD
+            $lista_vacaciones[$usuario['username']]['vacaciones'][$dia->format("Y-m-d")]=0;
         
-        $lista_vacaciones[$usuario['username']]['vacaciones'] = array(1=>0,2=>0,3=>0,4=>0,5=>1,6=>0,7=>0,8=>0,9=>0,10=>1);
+        }
     }
     return $app->json($lista_vacaciones);
 })

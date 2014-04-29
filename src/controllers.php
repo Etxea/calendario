@@ -19,7 +19,7 @@ $app->get('/programacion-servicio', function () use ($app) {
 })
 ->bind('programacion-servicio')
 ;
-
+//montamos el controlador de las vacaciones
 $app->mount('/vacaciones', include 'vacaciones.php');
 
 $app->get('graciables', function () use ($app) {

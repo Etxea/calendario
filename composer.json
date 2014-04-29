@@ -24,6 +24,7 @@
 	"sabre/vobject" : "2.1.*",
         "sabre/dav" : "1.8.*",
 	"doctrine/dbal": "2.4.*@dev",
+	"yohang/calendr": "1.*",
         "etxea/sabremw": "dev-master" 
     },
     "autoload": {

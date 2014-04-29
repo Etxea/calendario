@@ -25,4 +25,6 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
 $app->register(new FormServiceProvider());
 
+$app['calendr'] = new CalendR\Calendar;
+
 return $app;
