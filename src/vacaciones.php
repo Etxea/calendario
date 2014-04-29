@@ -1,8 +1,10 @@
 <?php
-
+/*
+ * Vista general, solo muestra la plantilla sin datos. Los datos se cargan de los JSON de cada mes
+ */
 $vacaciones = $app['controllers_factory'];
 $vacaciones->get('/', function () use ($app) {
-    return $app['twig']->render('vacaciones.html');
+    return $app['twig']->render('vacaciones.html',array('ano'=>2014));
 })
 ->bind('vacaciones')
 ;
@@ -10,7 +12,7 @@ $vacaciones->get('/', function () use ($app) {
 /*
  * Devolvemos un JSON con un array que tiene por cada usuario y cada dia del mes un 1 o un 0 indicando si tiene fiesta o no
  */
-$vacaciones->get('/{ano}/{mes}/', function () use ($app) {
+$vacaciones->get('/{ano}/{mes}/', function ($ano,$mes) use ($app) {
     $lista_vacaciones = array();
     //Usamos la librería calendr para sacar los días del mes y año
     $dias_mes = 
@@ -27,7 +29,28 @@ $vacaciones->get('/{ano}/{mes}/', function () use ($app) {
 ->assert('mes', '\d+') //nos aseguramos que nos pasan un decimal
 ;
 
+/*
+ * Añadimos un día de vacaciones.
+ */
+$vacaciones->match('/add/{id}/{fecha}/', function ($id,$fecha) use ($app) {
+    return $app->json(array("estado"=> "ok", 
+        "mensaje"=> "Agregado dia de vacaciones el ".$fecha." Al usuario".$id));
+})
+->bind('vacaciones-add')
+->assert('id', '\d+') //nos aseguramos que nos pasan un decimal
+;
 
-return $vacaciones
+/*
+ * Eliminamos un día de vacaciones.
+ */
+$vacaciones->match('/del/{id}/{fecha}/', function ($id,$fecha) use ($app) {
+    return $app->json(array("estado"=> "ok", 
+        "mensaje"=> "Eliminado dia de vacaciones el ".$fecha." Al usuario ".$id));
+})
+->bind('vacaciones-del')
+->assert('id', '\d+') //nos aseguramos que nos pasan un decimal
+;
+
+return $vacaciones;
 
 ?>
