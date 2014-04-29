@@ -20,13 +20,7 @@ $app->get('/programacion-servicio', function () use ($app) {
 ->bind('programacion-servicio')
 ;
 
-$app->get('vacaciones/{ano}/{mes}', function ($ano,$mes) use ($app) {
-    $ano = $app->escape($ano);
-    $ano = $app->escape($ano);
-    return $app['twig']->render('vacaciones.html', array("año"=>$ano, "mes"=>$mes));
-})
-->bind('vacaciones')
-;
+$app->mount('/vacaciones', include 'vacaciones.php');
 
 $app->get('graciables', function () use ($app) {
     return $app['twig']->render('graciables.html', array());
