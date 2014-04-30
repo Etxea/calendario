@@ -20,6 +20,7 @@ $vacaciones->get('/{ano}/{mes}/', function ($ano,$mes) use ($app) {
     $lista_usuarios = $app['db']->fetchAll('SELECT * FROM usuarios');
     foreach($lista_usuarios as  $usuario) {
         //echo "Usuario: ".$usuario['username'];
+        $lista_vacaciones[$usuario['username']]['username'] = $usuario['username'];
         $lista_vacaciones[$usuario['username']]['id'] = $usuario['id'];
         $lista_vacaciones[$usuario['username']]['vacaciones'] = array();
         //recorremos las semanas del mes
@@ -27,8 +28,11 @@ $vacaciones->get('/{ano}/{mes}/', function ($ano,$mes) use ($app) {
             //echo "Día ".$dia->format("d")."\n";
             //rellenamos los días
             //esto hay que leerlo de BBDD
-            $lista_vacaciones[$usuario['username']]['vacaciones'][$dia->format("Y-m-d")]=0;
-        
+            $lista_vacaciones[$usuario['username']]['vacaciones'][$dia->format("Y-m-d")] = array(
+                "user_id" => $usuario['username']['id'],
+                "activo" => 0
+            );
+
         }
     }
     return $app->json($lista_vacaciones);
@@ -37,6 +41,36 @@ $vacaciones->get('/{ano}/{mes}/', function ($ano,$mes) use ($app) {
 ->assert('ano', '\d+') //nos aseguramos que nos pasan un decimal
 ->assert('mes', '\d+') //nos aseguramos que nos pasan un decimal
 ;
+
+/*
+ * Devolvemos un HTML con un array que tiene por cada usuario y cada dia del mes un 1 o un 0 indicando si tiene fiesta o no
+ */
+$vacaciones->get('/{ano}/{mes}/html/', function ($ano,$mes) use ($app) {
+    $lista_vacaciones = array();
+    //Usamos la librería calendr para sacar los días del mes y año
+    $calendario_mes = $app['calendr']->getMonth($ano, $mes);
+    //var_dump($calendario_mes);
+    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM usuarios');
+    //recorremos los días del mes
+    foreach($calendario_mes->getDays()  as $dia) {
+        $lista_vacaciones[$dia->format("Y-m-d")]['dia_mes'] = $dia->format("d");
+        $lista_vacaciones[$dia->format("Y-m-d")]['vacaciones'] = array();
+        foreach($lista_usuarios as  $usuario) {
+            $lista_vacaciones[$dia->format("Y-m-d")]['vacaciones'][$usuario['username']]= array(
+                "dia" => $dia->format("Y-m-d"),
+                "user_id" => $usuario['id'],
+                "activo" => rand(0,1)
+                );
+        }
+    };
+    //var_dump($lista_vacaciones);
+    return $app['twig']->render('vacaciones-tabla.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_vacaciones'=>$lista_vacaciones));
+})
+->bind('vacaciones-ano-mes-html')
+->assert('ano', '\d+') //nos aseguramos que nos pasan un decimal
+->assert('mes', '\d+') //nos aseguramos que nos pasan un decimal
+;
+
 
 /*
  * Añadimos un día de vacaciones.

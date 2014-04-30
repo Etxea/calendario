@@ -52,6 +52,8 @@ $app->get('reunion', function () use ($app) {
 ->bind('reunion')
 ;
 
+$app->mount('/servicios', include 'servicios.php');
+
 $app->mount('/usuarios', include 'usuarios.php');
 
 
