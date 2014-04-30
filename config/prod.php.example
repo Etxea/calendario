@@ -10,8 +10,8 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'driver'   => 'pdo_mysql',
 	 'host'      => 'localhost',
          'dbname'    => 'uroges',
-         'user'      => 'urogesusr',
-         'password'  => 'SantaHelena6948!',
+         'user'      => 'uroges',
+         'password'  => 'uroges',
          'charset'   => 'utf8',
     ),
 ));
