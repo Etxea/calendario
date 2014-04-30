@@ -1,0 +1,24 @@
+
+<table class="table table-striped table-bordered table-hover">
+<tr>
+<th>&nbsp;</th>
+{% for usuario in lista_usuarios %}
+<th class="center">{{ usuario.username }}</th>
+{%  endfor %}
+</tr>
+
+{% for dia in lista_vacaciones %}
+
+<tr>
+    <th class="center">{{dia.dia_mes}}</th>
+    {% for vacacion in dia.vacaciones %}
+    <td class="center">
+        <input id="check_{{dia.dia_mes}}_{{vacacion.user_id}}" type="checkbox" name="" value="" 
+        {% if vacacion.activo == 1 %} checked {% endif %} 
+        onchange="cambio_check_vacaciones.call(this, '{{vacacion.dia}}', '{{vacacion.user_id}}' );"/>
+    </td>
+    {%  endfor %}
+</tr>
+{%  endfor %}
+</table>
+
