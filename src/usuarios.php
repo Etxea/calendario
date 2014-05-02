@@ -32,6 +32,8 @@ $usuarios->match('/alta', function () use ($app) {
             unset($data['id']);
             $app['db']->insert('usuarios',$data);
             $mensaje = "usuario creado";
+            $pass_md5 = md5($data['username'].':SabreDAV:'.$data['password']);
+            $app['db']->insert('users',array('username'=>$data['username'],'digesta1'=>$pass_md5));
             return $app->redirect($app['url_generator']->generate('usuarios'));
         } else {
             $mensaje = "Formulario mal";
@@ -67,8 +69,14 @@ $usuarios->match('/editar/{id}', function ($id) use ($app) {
             $data = $form->getData();
             //ahora a actualizar la BBDD
             unset($data['id']);
+            
+            
             $app['db']->update('usuarios',$data,array('id' => $id));
-            // hay que cambiar la pass en caldav
+            // hay que cambiar la pass en caldav.
+            //Primer generamos el password en md5
+            $pass_md5 = md5($data['username'].':SabreDAV:'.$data['password']);
+            $app['db']->update('users',array('username'=>$data['username'],'digesta1'=>$pass_md5),array('username',$data['username']));
+            
         } else {
             $mensaje = "Formulario mal";
         }
