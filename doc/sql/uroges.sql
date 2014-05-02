@@ -16,6 +16,84 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `ocupacion`
+--
+
+DROP TABLE IF EXISTS `ocupacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ocupacion` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `tipo` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ocupacion`
+--
+
+LOCK TABLES `ocupacion` WRITE;
+/*!40000 ALTER TABLE `ocupacion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ocupacion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `servicios`
+--
+
+DROP TABLE IF EXISTS `servicios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `servicios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `nombre_corto` varchar(6) NOT NULL,
+  `estado` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `servicios`
+--
+
+LOCK TABLES `servicios` WRITE;
+/*!40000 ALTER TABLE `servicios` DISABLE KEYS */;
+INSERT INTO `servicios` VALUES (1,0,'Planta Izquierda','Planta',1),(2,0,'Consulta numero 2','Consul',1),(3,3,'Ambulatorio 1','Amb1',1),(4,4,'Guardia','Guardi',0);
+/*!40000 ALTER TABLE `servicios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `servicios_tipo`
+--
+
+DROP TABLE IF EXISTS `servicios_tipo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `servicios_tipo` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `nombre` (`nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `servicios_tipo`
+--
+
+LOCK TABLES `servicios_tipo` WRITE;
+/*!40000 ALTER TABLE `servicios_tipo` DISABLE KEYS */;
+INSERT INTO `servicios_tipo` VALUES (3,'Ambulatorio'),(100,'Baja Labora'),(2,'Consulta'),(4,'Guardia'),(1,'Planta');
+/*!40000 ALTER TABLE `servicios_tipo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usuarios`
 --
 
@@ -32,7 +110,7 @@ CREATE TABLE `usuarios` (
   `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +119,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin','admin admin',1,1,'admin','admin'),(2,'jon2','latorre martinez',1,0,'jlat2','secreto'),(3,'jon1','latorre martinez',1,0,'jj','jj');
+INSERT INTO `usuarios` VALUES (1,'admin','admin admin',1,1,'admin','admin'),(2,'jon2','latorre martinez',1,0,'jlat2','secreto'),(3,'jon1','latorre martinez',1,0,'jj','jj'),(4,'pedor','la la',3,1,'pedro','pp');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +132,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-29  9:49:52
+-- Dump completed on 2014-05-02 17:38:45
