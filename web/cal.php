@@ -9,7 +9,8 @@ This server features CalDAV support
 */
 
 /* Database */
-$pdo = new \PDO('mysql:dbname='.$db_name,$db_user,$db_pass);
+include '../config/sabre.php';
+$pdo = new \PDO("mysql:dbname=$db_name",$db_user,$db_pass);
 $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 //Mapping PHP errors to exceptions
