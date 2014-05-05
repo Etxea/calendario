@@ -14,6 +14,8 @@ $app->get('/', function () use ($app) {
 ->bind('homepage')
 ;
 
+$app->mount('/ocupacion', include 'ocupacion.php');
+
 $app->get('/programacion-servicio', function () use ($app) {
     return $app['twig']->render('programacion-servicio.html', array());
 })

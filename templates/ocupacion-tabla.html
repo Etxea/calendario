@@ -1,0 +1,542 @@
+<table class="table table-striped table-bordered table-hover">
+<tr>
+<th>&nbsp;</th>
+{% for usuario in lista_usuarios %}
+<th class="center">{{ usuario.username}}</th>
+{% endfor %}
+</tr>
+{% for servicio in lista_servicios %}
+<tr>
+<th>{{servicio.nombre_corto}}</th>
+{% for usuario in lista_usuarios %}
+<td class="center">
+    <input id="" type="checkbox" name="" value="" 
+    {% if lista_ocupacion[servicio.nombre_corto][usuario.username].activo == 1 %} checked {% endif %}
+    onchange="cambio_check_vacaciones.call(this, '' );"/>
+</td>
+{% endfor %}
+</tr>
+{% endfor %}
+<tr>
+    <!--
+<th>Planta der.</th>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>Hoja cons.</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+</tr>
+<tr>
+<th>Consulta 4</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>Consulta 6</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>Consulta 7</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>Consulta 9</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>Quirof. 3U</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>Quirof. 3G</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>Quirof. 5º</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>Quirof. Urg.</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>AMB. ORT.</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>AMB. LA</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>AMB. SJD</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>AMB. DEU</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>AMB. DrA</th>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>AMB. ...</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>GUAR. PF</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>GUAR. LOC</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>GUAR. TRA.</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+<tr>
+<th>GUAR. BM</th>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center"><button class="btn btn-xa btn-default"><i class="fa fa-check"></i></button></td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+<td class="center">&nbsp;</td>
+</tr>
+-->
+</table>
