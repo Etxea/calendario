@@ -55,14 +55,15 @@ $ocupacion->match('/add/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$i
 ;
 
 /*
- * Eliminamos un día de vacaciones.
+ * Eliminamos un día de ocupacion.
  */
-$ocupacion->match('/del/{id}/', function ($id) use ($app) {
+$ocupacion->match('/del/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$id_servicio,$fecha) use ($app) {
     return $app->json(array("estado"=> "ok", 
-        "mensaje"=> "Eliminado dia de vacaciones ".$id));
+        "mensaje"=> "Eliminado la ocupacion del usuario ".$id_user." al servicio ".$id_servicio." el dia ".$fecha));
 })
-->bind('vacaciones-del')
-->assert('id', '\d+') //nos aseguramos que nos pasan un decimal
+->bind('ocupacion-del')
+->assert('id_user', '\d+') //nos aseguramos que nos pasan un decimal
+->assert('id_servicio', '\d+') //nos aseguramos que nos pasan un decimal
 ;
 
 return $ocupacion;
