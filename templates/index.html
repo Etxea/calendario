@@ -2,6 +2,28 @@
 
 {% block title %} Programado {%endblock%}
 
+{% block extra_scripts %}
+<script>
+
+$(function() {
+    cargar_tabla_ocupacion(2014,01,01)
+});
+
+function cargar_tabla_ocupacion(ano,mes,dia) {
+    console.log("Vamos a cargar los datos vía ajax");
+    $( "#div_tabla_ocupacion" ).empty();
+    //FIXME algun tipo de loading
+    $.ajax({
+        url: "/ocupacion/"+ano+"/"+mes+"/"+dia+"/1",
+        cache: false
+        
+        })
+        .done(function( data ) {
+        $( "#div_tabla_ocupacion" ).append( data );
+        });
+};
+</script>
+{% endblock %}
 
 {% block content %}
 
@@ -33,7 +55,7 @@
 
 <div class="col-md-12">
 
-<div class="widget">
+<div class="widget" id="div_tabla_ocupacion">
 
 <div class="widget-head">
 <div class="pull-left">Semana: 07/04/2014 - 13/04/2014</div>

@@ -13,7 +13,7 @@ function cargar_tabla_ocupacion(ano,mes,dia) {
     $( "#div_tabla_ocupacion" ).empty();
     //FIXME algun tipo de loading
     $.ajax({
-        url: "/ocupacion/"+ano+"/"+mes+"/"+dia+"/",
+        url: "/ocupacion/"+ano+"/"+mes+"/"+dia,
         cache: false
         
         })

@@ -1,13 +1,13 @@
 <?php
 /*
- * Vista general, solo muestra la plantilla sin datos. Los datos se cargan de los JSON de cada mes
+ * Controlador de la parte de ocupacion y programacion de los servicios
  */
 $ocupacion = $app['controllers_factory'];
 
 /*
- * Devolvemos un HTML con un array que tiene por cada usuario y cada dia del mes un 1 o un 0 indicando si tiene fiesta o no
+ * Devolvemos un HTML 
  */
-$ocupacion->get('/{ano}/{mes}/{dia}/', function ($ano,$mes,$dia) use ($app) {
+$ocupacion->get('/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$dia,$estatico) use ($app) {
     //Usamos la librería calendr para sacar los días del la semana
     $weeknummer = date("W", mktime(0, 0, 1, $mes, $dia, $ano));
     //echo "Nums. semana ".$weeknummer;
@@ -32,14 +32,20 @@ $ocupacion->get('/{ano}/{mes}/{dia}/', function ($ano,$mes,$dia) use ($app) {
         }
     }
     //var_dump($lista_ocupacion);
-    return $app['twig']->render('ocupacion-tabla.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion));
-    
+    if ($estatico == 0) {
+        return $app['twig']->render('ocupacion-tabla.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion));
+    }
+    elseif ($estatico == 1) {
+        return $app['twig']->render('ocupacion-tabla-estatica.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion));
+    }
 })
 ->bind('ocupacion-html')
 ->assert('ano', '\d+') //nos aseguramos que nos pasan un decimal
 ->assert('mes', '\d+') //nos aseguramos que nos pasan un decimal
 ->assert('dia', '\d+') //nos aseguramos que nos pasan un decimal
+->value('estatico', 0) //este parámetro es opcional y si está a 1 mostramos una tabla estatica
 ;
+
 
 
 /*
