@@ -29,7 +29,7 @@ $ocupacion->get('/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$dia,$estat
         //$lista_ocupacion[$servicio['nombre_corto']] = array();
         foreach($lista_usuarios as $usuario) {
             //echo "Buscando la ocupacio del usuario ".$usuario['username']." en el servicio ".$servicio['nombre_corto'];
-            $ocupado = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND servicio_id = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$dia->format("Ymd")));
+            $ocupado = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion_servicios WHERE user_id = ? AND servicio_id = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$dia->format("Ymd")));
             //var_dump($ocupado);
             $lista_ocupacion[$servicio['nombre_corto']][$usuario['username']] = array(
                 "dia" => $dia->format("Ymd"),
@@ -60,7 +60,7 @@ $ocupacion->get('/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$dia,$estat
  * Añadimos un día de vacaciones.
  */
 $ocupacion->match('/add/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$id_servicio,$fecha) use ($app) {
-    echo "Creando el CalDAV<br>";
+    //echo "Creando el CalDAV<br>";
     //Lo guardamos en el CalDAV
     $smw = new Etxea\SabreMW($app['db']);
     $user = $app['db']->fetchAssoc('SELECT * FROM usuarios WHERE id = ?',array($id_user));
@@ -68,7 +68,7 @@ $ocupacion->match('/add/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$i
     $calendar_id = $smw->getUserCalendar($user['username']);
     $evento = $smw->addEvent($calendar_id,$servicio['nombre'],$servicio['nombre_corto'],$fecha);
     //Lo guardamos en BBDD
-    $app['db']->insert('ocupacion',array('user_id'=>$id_user,'servicio_id'=>$id_servicio,'fecha'=>$fecha,'caldav_id'=>$evento));
+    $app['db']->insert('ocupacion_servicios',array('user_id'=>$id_user,'servicio_id'=>$id_servicio,'fecha'=>$fecha,'caldav_id'=>$evento));
     return $app->json(array("estado"=> "ok", 
         "mensaje"=> "Agregado la ocupación el ".$fecha." al usuario".$id_user." en el servicio ".$id_servicio." con el ID en caldav ".$evento));
 })
@@ -83,11 +83,11 @@ $ocupacion->match('/add/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$i
 $ocupacion->match('/del/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$id_servicio,$fecha) use ($app) {
     $smw = new Etxea\SabreMW($app['db']);
     //Lo buscamos  en BBDD porque necesitamos el caldav_id
-    $ocupacion = $app['db']->fetchAssoc('SELECT * FROM ocupacion WHERE user_id = ? AND servicio_id = ? AND fecha = ?',array($id_user,$id_servicio,$fecha));
+    $ocupacion = $app['db']->fetchAssoc('SELECT * FROM ocupacion_servicios WHERE user_id = ? AND servicio_id = ? AND fecha = ?',array($id_user,$id_servicio,$fecha));
     //Lo borramos en el CalDAV
     $smw->delEvent($ocupacion['caldav_id']);
     //Lo borramos en la BBDD
-    $ret = $app['db']->delete('ocupacion',array('id'=>$ocupacion['id']));
+    $ret = $app['db']->delete('ocupacion_servicios',array('id'=>$ocupacion['id']));
     if ($ret == 1 ) {
         return $app->json(array("estado"=> "ok", 
             "mensaje"=> "Eliminado la ocupacion del usuario ".$id_user." al servicio ".$id_servicio." el dia ".$fecha));
