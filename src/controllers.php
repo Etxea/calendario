@@ -8,14 +8,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 
+//Mostramos un HTML que cargará vía AJAX la tabla /ver controlador ocupación)
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html', array());
 })
 ->bind('homepage')
 ;
 
-$app->mount('/ocupacion', include 'ocupacion.php');
 
+
+
+//Mostramos un HTML que cargará vía AJAX la tabla /ver controlador ocupación)
 $app->get('/programacion-servicio', function () use ($app) {
     return $app['twig']->render('programacion-servicio.html', array());
 })
@@ -54,8 +57,9 @@ $app->get('reunion', function () use ($app) {
 ->bind('reunion')
 ;
 
+//SUBControladores para organizar el código
+$app->mount('/ocupacion', include 'ocupacion.php');
 $app->mount('/servicios', include 'servicios.php');
-
 $app->mount('/usuarios', include 'usuarios.php');
 
 

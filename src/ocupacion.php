@@ -4,8 +4,14 @@
  */
 $ocupacion = $app['controllers_factory'];
 
+include "../vendor/etxea/sabremw/lib/SabreMW/SabreMW.php";
+
+
+
 /*
- * Devolvemos un HTML 
+ * Devolvemos un HTML con la tabla de ocupacion usuario/servicio de un día. 
+ * Esta tabla puede ser estatica (iconos) o dinámica (inputs tipo check). 
+ * Con la dinamica llamamos vía AJAX a las funcioes de añadir y borrar ocupación
  */
 $ocupacion->get('/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$dia,$estatico) use ($app) {
     //Usamos la librería calendr para sacar los días del la semana
@@ -23,20 +29,22 @@ $ocupacion->get('/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$dia,$estat
         //$lista_ocupacion[$servicio['nombre_corto']] = array();
         foreach($lista_usuarios as $usuario) {
             //echo "Buscando la ocupacio del usuario ".$usuario['username']." en el servicio ".$servicio['nombre_corto'];
+            $ocupado = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND servicio_id = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$dia->format("Ymd")));
+            //var_dump($ocupado);
             $lista_ocupacion[$servicio['nombre_corto']][$usuario['username']] = array(
-                "dia" => $dia->format("Y-m-d"),
+                "dia" => $dia->format("Ymd"),
                 "user_id" => $usuario['id'],
                 "servicio_id" => $servicio['id'],
-                "activo" => rand(0,1)
+                "activo" => $ocupado['activo']
                 );
         }
     }
     //var_dump($lista_ocupacion);
     if ($estatico == 0) {
-        return $app['twig']->render('ocupacion-tabla.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion));
+        return $app['twig']->render('ocupacion-tabla.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion,'semana'=>$lista_dias));
     }
     elseif ($estatico == 1) {
-        return $app['twig']->render('ocupacion-tabla-estatica.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion));
+        return $app['twig']->render('ocupacion-tabla-estatica.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion,'semana'=>$lista_dias));
     }
 })
 ->bind('ocupacion-html')
@@ -52,8 +60,17 @@ $ocupacion->get('/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$dia,$estat
  * Añadimos un día de vacaciones.
  */
 $ocupacion->match('/add/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$id_servicio,$fecha) use ($app) {
+    echo "Creando el CalDAV<br>";
+    //Lo guardamos en el CalDAV
+    $smw = new Etxea\SabreMW($app['db']);
+    $user = $app['db']->fetchAssoc('SELECT * FROM usuarios WHERE id = ?',array($id_user));
+    $servicio = $app['db']->fetchAssoc('SELECT * FROM servicios WHERE id = ?',array($id_servicio));
+    $calendar_id = $smw->getUserCalendar($user['username']);
+    $evento = $smw->addEvent($calendar_id,$servicio['nombre'],$servicio['nombre_corto'],$fecha);
+    //Lo guardamos en BBDD
+    $app['db']->insert('ocupacion',array('user_id'=>$id_user,'servicio_id'=>$id_servicio,'fecha'=>$fecha,'caldav_id'=>$evento));
     return $app->json(array("estado"=> "ok", 
-        "mensaje"=> "Agregado la ocupación el ".$fecha." al usuario".$id_user." en el servicio ".$id_servicio));
+        "mensaje"=> "Agregado la ocupación el ".$fecha." al usuario".$id_user." en el servicio ".$id_servicio." con el ID en caldav ".$evento));
 })
 ->bind('ocupacion-add')
 ->assert('id_user', '\d+') //nos aseguramos que nos pasan un decimal
@@ -64,8 +81,20 @@ $ocupacion->match('/add/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$i
  * Eliminamos un día de ocupacion.
  */
 $ocupacion->match('/del/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$id_servicio,$fecha) use ($app) {
-    return $app->json(array("estado"=> "ok", 
-        "mensaje"=> "Eliminado la ocupacion del usuario ".$id_user." al servicio ".$id_servicio." el dia ".$fecha));
+    $smw = new Etxea\SabreMW($app['db']);
+    //Lo buscamos  en BBDD porque necesitamos el caldav_id
+    $ocupacion = $app['db']->fetchAssoc('SELECT * FROM ocupacion WHERE user_id = ? AND servicio_id = ? AND fecha = ?',array($id_user,$id_servicio,$fecha));
+    //Lo borramos en el CalDAV
+    $smw->delEvent($ocupacion['caldav_id']);
+    //Lo borramos en la BBDD
+    $ret = $app['db']->delete('ocupacion',array('id'=>$ocupacion['id']));
+    if ($ret == 1 ) {
+        return $app->json(array("estado"=> "ok", 
+            "mensaje"=> "Eliminado la ocupacion del usuario ".$id_user." al servicio ".$id_servicio." el dia ".$fecha));
+    } else {
+        return $app->json(array("estado"=> "ko", 
+            "mensaje"=> "No se ha podido eliminar la ocupacion del usuario ".$id_user." al servicio ".$id_servicio." el dia ".$fecha));
+    }
 })
 ->bind('ocupacion-del')
 ->assert('id_user', '\d+') //nos aseguramos que nos pasan un decimal

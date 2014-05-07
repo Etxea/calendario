@@ -25,9 +25,9 @@ function cargar_tabla_ocupacion(ano,mes,dia) {
 //funcion que hace la peticion de cambiar un día festivo
 function cambiar_ocupacion(user_id, servicio_id, dia, activo) {
     if (activo == 1) {
-        url_peticion = "/ocupacion/add/"+servicio_id+"/"+user_id+"/"+dia+"/";
+        url_peticion = "/ocupacion/add/"+user_id+"/"+servicio_id+"/"+dia+"/";
     } else {
-        url_peticion = "/ocupacion/del/"+servicio_id+"/"+user_id+"/"+dia+"/";
+        url_peticion = "/ocupacion/del/"+user_id+"/"+servicio_id+"/"+dia+"/";
     }
     $.ajax({
         url: url_peticion,

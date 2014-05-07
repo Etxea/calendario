@@ -32,8 +32,12 @@ $usuarios->match('/alta', function () use ($app) {
             unset($data['id']);
             $app['db']->insert('usuarios',$data);
             $mensaje = "usuario creado";
+            //Vamos con el alta en CalDAV
             $pass_md5 = md5($data['username'].':SabreDAV:'.$data['password']);
             $app['db']->insert('users',array('username'=>$data['username'],'digesta1'=>$pass_md5));
+            // INSERT INTO calendars (principaluri, displayname, uri, description, components, ctag, transparent) VALUES
+            // ('principals/admin','default calendar','default','','VEVENT,VTODO','1', '0');
+
             return $app->redirect($app['url_generator']->generate('usuarios'));
         } else {
             $mensaje = "Formulario mal";
