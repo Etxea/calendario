@@ -366,18 +366,20 @@ $(document).ready(function(){
 
 
 /* CL Editor */
-
+/* Jon Latorre comentando pues no se usa y no está instala la lib
 $(".cleditor").cleditor({
     width: "auto",
     height: "auto"
 });
-
+*/
 /* Modal fix */
 
 $('.modal').appendTo($('body'));
 
 /* Pretty Photo for Gallery*/
+/* Jon Latorre comentando pues no se usa y no está instala la lib
 
 jQuery("a[class^='prettyPhoto']").prettyPhoto({
 overlay_gallery: false, social_tools: false
 });
+*/
