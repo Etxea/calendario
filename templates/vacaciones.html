@@ -9,11 +9,11 @@ $(function() {
 });
 
 function cargar_tabla_vacaciones_mes(mes) {
-    console.log("Vamos a cargar los datos vía ajax de /vacaciones/{{ano}}/"+mes+"/html/ ");
+    console.log("Vamos a cargar los datos vía ajax de /ocupacion/otros/1/{{ano}}/"+mes+"/html/ ");
     $( "#div_tabla_vacaciones" ).empty();
     //FIXME algun tipo de loading
     $.ajax({
-        url: "/vacaciones/{{ano}}/"+mes+"/html/",
+        url: "/ocupacion/otros/1/{{ano}}/"+mes+"/",
         cache: false
         
         })
@@ -25,9 +25,9 @@ function cargar_tabla_vacaciones_mes(mes) {
 //funcion que hace la peticion de cambiar un día festivo
 function cambiar_festivo(dia, user_id,activo) {
     if (activo == 1) {
-        url_peticion = "/vacaciones/add/"+user_id+"/"+dia+"/";
+        url_peticion = "/ocupacion/otros/add/1/"+user_id+"/"+dia+"/";
     } else {
-        url_peticion = "/vacaciones/del/"+user_id+"/"+dia+"/";
+        url_peticion = "/ocupacion/otros/del/1/"+user_id+"/"+dia+"/";
     }
     $.ajax({
         url: url_peticion,
@@ -40,7 +40,7 @@ function cambiar_festivo(dia, user_id,activo) {
     );
 }
 //funcion que maneja el cambio del estado de un check
-function cambio_check_vacaciones(dia, user_id) {
+function cambio_check_ocupaciones(dia, user_id) {
     console.log("vamos a cambiar el día de vacaciones "+dia+" del usuario "+user_id );
     //FIXME este if funciona al reves???
     if (this.checked) {

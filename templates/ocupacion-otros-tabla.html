@@ -11,16 +11,16 @@
 {%  endfor %}
 </tr>
 
-{% for dia in lista_vacaciones %}
+{% for dia in lista_ocupaciones %}
 
 <tr>
     <th class="center">{{dia.dia_mes}}</th>
-    {% for vacacion in dia.vacaciones %}
+    {% for ocupacion in dia.ocupaciones %}
     <td class="center">
-        <input id="check_{{dia.dia_mes}}_{{vacacion.user_id}}" type="checkbox" name="" value="" 
-        {% if vacacion.activo == 1 %} checked {% endif %}
+        <input id="check_{{dia.dia_mes}}_{{ocupacion.user_id}}" type="checkbox" name="" value="" 
+        {% if ocupacion.activo == 1 %} checked {% endif %}
         {% if dia.festivo == 1 %} disabled {% endif %}
-        onchange="cambio_check_vacaciones.call(this, '{{vacacion.dia}}', '{{vacacion.user_id}}' );"/>
+        onchange="cambio_check_ocupaciones.call(this, '{{ocupacion.dia}}', '{{ocupacion.user_id}}' );"/>
         
     </td>
     {%  endfor %}
