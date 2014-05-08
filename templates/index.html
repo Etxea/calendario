@@ -6,15 +6,15 @@
 <script>
 
 $(function() {
-    cargar_tabla_ocupacion(2014,01,01)
+    cargar_tabla_ocupacion_estatica(2014,01,01)
 });
 
-function cargar_tabla_ocupacion(ano,mes,dia) {
+function cargar_tabla_ocupacion_estatica(ano,mes,dia) {
     console.log("Vamos a cargar los datos vía ajax");
     $( "#div_tabla_ocupacion" ).empty();
     //FIXME algun tipo de loading
     $.ajax({
-        url: "/ocupacion/"+ano+"/"+mes+"/"+dia+"/1",
+        url: "/ocupacion/servicio/"+ano+"/"+mes+"/"+dia+"/1",
         cache: false
         
         })
