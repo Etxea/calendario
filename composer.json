@@ -1,7 +1,7 @@
 {
-    "name": "fabpot/silex-skeleton",
-    "description": "A pre-configured skeleton for the Silex microframework",
-    "license": "MIT",
+    "name": "etxea/calendario",
+    "description": "Aplicacion de gestin del calendario para uroges",
+    "license": "GPL-2",
     "type": "project",
     "require": {
         "php": ">=5.3.3",
@@ -21,10 +21,9 @@
         "symfony/translation": "~2.3",
         "symfony/twig-bridge": "~2.3",
         "symfony/validator": "~2.3",
-        "sabre/vobject" : "~3.2",
-        "sabre/dav" : "1.8.*",
-	"doctrine/dbal": "2.4.*@dev",
-	"yohang/calendr": "1.*",
+        "sabre/dav": "dev-slightly-better-browser",
+        "doctrine/dbal": "2.4.*@dev",
+        "yohang/calendr": "1.*",
         "etxea/sabremw": "dev-master" 
     },
     "autoload": {
