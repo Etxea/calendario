@@ -14,9 +14,9 @@
 {% for dia in lista_ocupaciones %}
 
 <tr>
-    <th class="center">{{dia.dia_mes}}</th>
+    <th class="center" {% if dia.festivo == 1 %} style="color:#ff0000; background:#f3e4e4;" {%endif%} >{{dia.dia_mes}}</th>
     {% for ocupacion in dia.ocupaciones %}
-    <td class="center">
+    <td class="center" {% if dia.festivo == 1 %} style="background:#f3e4e4;" {%endif%}>
         <input id="check_{{dia.dia_mes}}_{{ocupacion.user_id}}" type="checkbox" name="" value="" 
         {% if ocupacion.activo == 1 %} checked {% endif %}
         {% if dia.festivo == 1 %} disabled {% endif %}

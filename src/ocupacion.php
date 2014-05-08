@@ -156,7 +156,8 @@ $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
     //Lo guardamos en el CalDAV
     $smw = new Etxea\SabreMW($app['db']);
     $user = $app['db']->fetchAssoc('SELECT * FROM usuarios WHERE id = ?',array($id_usuario));
-    $tipos = array(1=>"Vacaciones",2=>"Congreso");
+    //FIXME esto a BBDD o conf!
+    $tipos = array(1=>"Vacaciones",2=>"Graciables",3=>"Baja laboral",4=>"Congreso",5=>"Ivestigacion",6=>"Reunion");
     $calendar_id = $smw->getUserCalendar($user['username']);
     $evento = $smw->addEvent($calendar_id,$tipos[$tipo],$tipos[$tipo],$fecha);
     //Lo guardamos en BBDD
@@ -173,6 +174,8 @@ $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
  * Eliminamos un día de ocupacion.
  */
 $ocupacion->match('/otros/del/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id_usuario,$fecha) use ($app) {
+    //FIXME esto a BBDD o conf!
+    $tipos = array(1=>"Vacaciones",2=>"Graciables",3=>"Baja laboral",4=>"Congreso",5=>"Ivestigacion",6=>"Reunion");
     $smw = new Etxea\SabreMW($app['db']);
     //Lo buscamos  en BBDD porque necesitamos el caldav_id
     $ocupacion = $app['db']->fetchAssoc('SELECT * FROM ocupacion_otros WHERE user_id = ? AND tipo = ? AND fecha = ?',array($id_usuario,$tipo,$fecha));
@@ -182,10 +185,10 @@ $ocupacion->match('/otros/del/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
     $ret = $app['db']->delete('ocupacion_otros',array('id'=>$ocupacion['id']));
     if ($ret == 1 ) {
         return $app->json(array("estado"=> "ok", 
-            "mensaje"=> "Eliminado la ocupacion del usuario ".$id_usuario." al servicio ".$tipo." el dia ".$fecha));
+            "mensaje"=> "Eliminado la ocupacion del usuario ".$id_usuario." del tipo ".$tipos[$tipo]." el dia ".$fecha));
     } else {
         return $app->json(array("estado"=> "ko", 
-            "mensaje"=> "No se ha podido eliminar la ocupacion del usuario ".$id_usuario." al servicio ".$tipo." el dia ".$fecha));
+            "mensaje"=> "No se ha podido eliminar la ocupacion del usuario ".$id_usuario." del ".$tipos[$tipo]." el dia ".$fecha));
     }
 })
 ->bind('ocupacion-otros-del')

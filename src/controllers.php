@@ -26,36 +26,11 @@ $app->get('/programacion-servicio', function () use ($app) {
 ;
 //montamos el controlador de las vacaciones
 $app->mount('/vacaciones', include 'vacaciones.php');
-
-$app->get('graciables', function () use ($app) {
-    return $app['twig']->render('graciables.html', array());
-})
-->bind('graciables')
-;
-
-$app->get('baja-laboral', function () use ($app) {
-    return $app['twig']->render('baja-laboral.html', array());
-})
-->bind('baja-laboral')
-;
-
-$app->get('congresos', function () use ($app) {
-    return $app['twig']->render('congresos.html', array());
-})
-->bind('congresos')
-;
-
-$app->get('investigacion', function () use ($app) {
-    return $app['twig']->render('investigacion.html', array());
-})
-->bind('investigacion')
-;
-
-$app->get('reunion', function () use ($app) {
-    return $app['twig']->render('reunion.html', array());
-})
-->bind('reunion')
-;
+$app->mount('/graciables', include 'graciables.php');
+$app->mount('/baja-laboral', include 'baja-laboral.php');
+$app->mount('/congresos', include 'congresos.php');
+$app->mount('/investigacion', include 'investigacion.php');
+$app->mount('/reunion', include 'reunion.php');
 
 //SUBControladores para organizar el código
 $app->mount('/ocupacion', include 'ocupacion.php');
