@@ -90,7 +90,7 @@ CREATE TABLE `calendarobjects` (
   `lastoccurence` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `calendarid` (`calendarid`,`uri`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `calendars` (
   `transparent` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `principaluri` (`principaluri`,`uri`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,8 +264,10 @@ CREATE TABLE `ocupacion_otros` (
   `tipo` varchar(12) NOT NULL,
   `fecha` date NOT NULL,
   `caldav_id` int(11) NOT NULL,
+  `modificiacion_user_id` int(11) NOT NULL,
+  `modificiacion_fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,7 +276,6 @@ CREATE TABLE `ocupacion_otros` (
 
 LOCK TABLES `ocupacion_otros` WRITE;
 /*!40000 ALTER TABLE `ocupacion_otros` DISABLE KEYS */;
-INSERT INTO `ocupacion_otros` VALUES (17,1,'3','2014-01-01',41),(19,1,'5','2014-01-06',43),(20,1,'5','2014-02-04',44),(21,1,'5','2014-04-07',45),(23,1,'6','2014-01-06',47),(25,1,'1','2014-01-01',49);
 /*!40000 ALTER TABLE `ocupacion_otros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,6 +292,8 @@ CREATE TABLE `ocupacion_servicios` (
   `servicio_id` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `caldav_id` int(11) NOT NULL,
+  `modificiacion_user_id` int(11) NOT NULL,
+  `modificiacion_fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -301,7 +304,6 @@ CREATE TABLE `ocupacion_servicios` (
 
 LOCK TABLES `ocupacion_servicios` WRITE;
 /*!40000 ALTER TABLE `ocupacion_servicios` DISABLE KEYS */;
-INSERT INTO `ocupacion_servicios` VALUES (6,1,3,'2014-01-01',16);
 /*!40000 ALTER TABLE `ocupacion_servicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,7 +322,7 @@ CREATE TABLE `principals` (
   `vcardurl` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uri` (`uri`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +400,7 @@ CREATE TABLE `users` (
   `digesta1` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -427,7 +429,7 @@ CREATE TABLE `usuarios` (
   `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -449,4 +451,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-09 11:14:02
+-- Dump completed on 2014-05-09 16:56:55
