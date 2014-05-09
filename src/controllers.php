@@ -9,11 +9,27 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 //Mostramos un HTML que cargará vía AJAX la tabla /ver controlador ocupación)
+
 $app->get('/', function () use ($app) {
-    return $app['twig']->render('index.html', array());
+    $ano= date("Y");
+    $semana_obj = $app['calendr']->getWeek($ano,1);
+    $inicio_semana=$semana_obj->getBegin();
+    return $app['twig']->render('index.html', 
+        array('ano'=>$inicio_semana->format('Y'),'mes'=>$inicio_semana->format('m'),'dia'=>$inicio_semana->format('d')));
 })
 ->bind('homepage')
 ;
+
+$app->get('/{ano}/{semana}/', function ($ano,$semana) use ($app) {
+    $semana_obj = $app['calendr']->getWeek($ano,$semana);
+    $inicio_semana=$semana_obj->getBegin();
+    return $app['twig']->render('index.html',
+        array('ano'=>$inicio_semana->format('Y'),'mes'=>$inicio_semana->format('m'),'dia'=>$inicio_semana->format('d')));
+    
+})
+;
+
+
 
 //Mostramos un HTML que cargará vía AJAX la tabla /ver controlador ocupación)
 $app->get('/programacion-servicio/{ano}/{semana}/', function ($ano,$semana) use ($app) {
