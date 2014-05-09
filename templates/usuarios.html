@@ -51,7 +51,7 @@
     <td>{{ usuario.categoria }}</td><td><span class="label label-success">{{ usuario.rol }}</span></td>
     <td>
         <a href="{{ url('usuarios-editar',{'id': usuario.id})}}"><button class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> </button></a> 
-        <a href="#"><button class="btn btn-xs btn-danger"><i class="fa fa-times-circle"></i> </button></a>
+        <a href="{{ url('usuarios-borrar',{'id': usuario.id})}}"><button class="btn btn-xs btn-danger"><i class="fa fa-times-circle"></i> </button></a>
     </td>
 </tr>
 
