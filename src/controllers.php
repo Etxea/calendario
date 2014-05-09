@@ -15,15 +15,39 @@ $app->get('/', function () use ($app) {
 ->bind('homepage')
 ;
 
-
-
-
 //Mostramos un HTML que cargará vía AJAX la tabla /ver controlador ocupación)
-$app->get('/programacion-servicio', function () use ($app) {
-    return $app['twig']->render('programacion-servicio.html', array());
+$app->get('/programacion-servicio/{ano}/{semana}/', function ($ano,$semana) use ($app) {
+    $semana_obj = $app['calendr']->getWeek($ano,$semana);
+    $inicio_semana=$semana_obj->getBegin();
+    return $app['twig']->render('programacion-servicio.html', 
+        array('ano'=>$inicio_semana->format('Y'),'mes'=>$inicio_semana->format('m'),'dia'=>$inicio_semana->format('d')));
 })
+->assert('ano', '\d+') //nos aseguramos que nos pasan un decimal
+->assert('semana', '\d+') //nos aseguramos que nos pasan un decimal
+->bind('programacion-servicio-ano-mes')
+;
+
+
+$app->get('/programacion-servicio/', function () use ($app) {
+    $ano= date("Y");
+    $semana_obj = $app['calendr']->getWeek($ano,1);
+    $inicio_semana=$semana_obj->getBegin();
+    var_dump($semana_obj);
+    var_dump($inicio_semana);
+    return $app['twig']->render('programacion-servicio.html', 
+        array('ano'=>$inicio_semana->format('Y'),'mes'=>$inicio_semana->format('m'),'dia'=>$inicio_semana->format('d')));
+})
+->assert('ano', '\d+') //nos aseguramos que nos pasan un decimal
+->assert('semana', '\d+') //nos aseguramos que nos pasan un decimal
 ->bind('programacion-servicio')
 ;
+
+
+//SubControladores para organizar el código
+$app->mount('/ocupacion', include 'ocupacion.php');
+$app->mount('/servicios', include 'servicios.php');
+$app->mount('/usuarios', include 'usuarios.php');
+
 //montamos el controlador de las vacaciones
 $app->mount('/vacaciones', include 'vacaciones.php');
 $app->mount('/graciables', include 'graciables.php');
@@ -31,12 +55,6 @@ $app->mount('/baja-laboral', include 'baja-laboral.php');
 $app->mount('/congresos', include 'congresos.php');
 $app->mount('/investigacion', include 'investigacion.php');
 $app->mount('/reunion', include 'reunion.php');
-
-//SUBControladores para organizar el código
-$app->mount('/ocupacion', include 'ocupacion.php');
-$app->mount('/servicios', include 'servicios.php');
-$app->mount('/usuarios', include 'usuarios.php');
-
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {

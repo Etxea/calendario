@@ -5,7 +5,7 @@
 {% block extra_scripts %}
 <script>
 $(function() {
-    cargar_tabla_ocupacion(2014,01,01)
+    cargar_tabla_ocupacion({{ano}},{{mes}},{{dia}})
 });
 
 function cargar_tabla_ocupacion(ano,mes,dia) {
