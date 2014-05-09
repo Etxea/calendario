@@ -21,6 +21,7 @@
         "symfony/translation": "~2.3",
         "symfony/twig-bridge": "~2.3",
         "symfony/validator": "~2.3",
+	"sabre/vobject" : "~3.2",
         "sabre/dav": "dev-slightly-better-browser",
         "doctrine/dbal": "2.4.*@dev",
         "yohang/calendr": "1.*",
