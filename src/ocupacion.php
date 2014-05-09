@@ -2,11 +2,11 @@
 /*
  * Controlador de la parte de ocupacion y programacion de los servicios
  */
+ 
 $ocupacion = $app['controllers_factory'];
 
-include "../vendor/etxea/sabremw/lib/SabreMW/SabreMW.php";
-
-
+//FIXME esto lod ebería hacer el autoload
+include_once "../vendor/etxea/sabremw/lib/SabreMW/SabreMW.php";
 
 /*
  * Devolvemos un HTML con la tabla de ocupacion usuario/servicio de un día. 
@@ -14,11 +14,16 @@ include "../vendor/etxea/sabremw/lib/SabreMW/SabreMW.php";
  * Con la dinamica llamamos vía AJAX a las funciones de añadir y borrar ocupación
  */
 $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$dia,$estatico) use ($app) {
+    //Primero tenemos que calcular el umero de semana y el ano.
+    //Es lioso porque puede pasar que el 31/12 de 2014 sea la semana 1 del año 2014
+    $week_year = date("o-W", mktime(12, 0, 0, $mes, $dia, $ano));
+    $week_year_array = explode("-",$week_year);
+    $weeknumber = $week_year_array[1];
+    $ano = $week_year_array[0];
+    //echo "Nums. semana ".$weeknumber." el dia ".$dia." del mes ".$mes." del año ".$ano;
     //Usamos la librería calendr para sacar los días del la semana
-    $weeknummer = date("W", mktime(0, 0, 1, $mes, $dia, $ano));
-    //echo "Nums. semana ".$weeknummer;
-    $lista_dias = $app['calendr']->getWeek($ano,$weeknummer);
-    //var_dump($semana);
+    $lista_dias = $app['calendr']->getWeek($ano,$weeknumber);
+    //var_dump($lista_dias);
     $dia = $app['calendr']->getDay($ano,$mes,$dia);
     //var_dump($calendario_mes);
     $lista_usuarios = $app['db']->fetchAll('SELECT * FROM usuarios ORDER BY username ASC');

@@ -1,6 +1,10 @@
 <ul id="myTab" class="nav nav-tabs">
 {% for dia in semana %}
-    <li><a href="#" onclick="cargar_tabla_ocupacion({{dia.format('Y')}},{{dia.format('m')}},{{dia.format('d')}});" data-toggle="tab">{{dia}}</a></li>
+    <li>
+        <a href="#" onclick="cargar_tabla_ocupacion({{dia.format('Y')}},{{dia.format('m')}},{{dia.format('d')}});" data-toggle="tab">
+            {{dia}} ({{dia.format('Ymd')}})
+        </a>
+    </li>
 {% endfor %}
 <!--
 <li class="active"><a href="#lunes" data-toggle="tab">Lunes</a></li>

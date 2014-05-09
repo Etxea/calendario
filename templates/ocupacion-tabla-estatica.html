@@ -2,7 +2,7 @@
 {% for dia in semana %}
     <li>
         <a href="#" onclick="cargar_tabla_ocupacion_estatica({{dia.format('Y')}},{{dia.format('m')}},{{dia.format('d')}});" data-toggle="tab">
-            {{dia}}-{{dia.format('Ymd')}}
+            {{dia}}({{dia.format('Ymd')}})
         </a>
     </li>
 {% endfor %}

@@ -9,7 +9,7 @@ $(function() {
 });
 
 function cargar_tabla_ocupacion(ano,mes,dia) {
-    console.log("Vamos a cargar los datos vía ajax");
+    console.log("Vamos a cargar los datos vía ajax del dia "+dia+" "+mes+" "+ano);
     $( "#div_tabla_ocupacion" ).empty();
     //FIXME algun tipo de loading
     $.ajax({
