@@ -22,11 +22,17 @@ function cargar_tabla_ocupacion(ano,mes,dia) {
         });
 };
 
-//funcion que hace la peticion de cambiar un día festivo
-function cambiar_ocupacion(user_id, servicio_id, dia, activo) {
-    if (activo == 1) {
+
+//funcion que maneja el cambio del estado de un check
+function cambio_check_ocupacion(user_id, servicio_id, dia) {
+    console.log("vamos a cambiar el día  "+dia+" la ocupacion del usuario "+user_id+" al servicio "+servicio_id );
+    //FIXME este if funciona al reves???
+    if (this.checked) {
+        console.log("Añadimos ocupacion");
         url_peticion = "/ocupacion/servicio/add/"+user_id+"/"+servicio_id+"/"+dia+"/";
     } else {
+        console.log("Quitamos ocupacion");
+        
         url_peticion = "/ocupacion/servicio/del/"+user_id+"/"+servicio_id+"/"+dia+"/";
     }
     $.ajax({
@@ -35,21 +41,16 @@ function cambiar_ocupacion(user_id, servicio_id, dia, activo) {
         
         })
         .done(function( data ) {
-            alert(data.mensaje);
+            if ( data.estado == "ko" ) {
+                console.log("Deschekamos");
+                this.checked=false;
+                $("#checkbox_"+dia+"_"+user_id).prop("checked",false);
+                console.log("Descheado!");
+                alert(data.mensaje);
+            }
+            
         }
     );
-}
-//funcion que maneja el cambio del estado de un check
-function cambio_check_ocupacion(user_id, servicio_id, dia) {
-    console.log("vamos a cambiar el día  "+dia+" la ocupacion del usuario "+user_id+" al servicio "+servicio_id );
-    //FIXME este if funciona al reves???
-    if (this.checked) {
-        console.log("Añadimos ocupacion");
-        cambiar_ocupacion(user_id, servicio_id, dia, 1);
-    } else {
-        console.log("Quitamos ocupacion");
-        cambiar_ocupacion(user_id, servicio_id, dia, 0);
-    }
     
 }
 

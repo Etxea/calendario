@@ -48,8 +48,8 @@ $app->get('/programacion-servicio/', function () use ($app) {
     $ano= date("Y");
     $semana_obj = $app['calendr']->getWeek($ano,1);
     $inicio_semana=$semana_obj->getBegin();
-    var_dump($semana_obj);
-    var_dump($inicio_semana);
+    #var_dump($semana_obj);
+    #var_dump($inicio_semana);
     return $app['twig']->render('programacion-servicio.html', 
         array('ano'=>$inicio_semana->format('Y'),'mes'=>$inicio_semana->format('m'),'dia'=>$inicio_semana->format('d')));
 })

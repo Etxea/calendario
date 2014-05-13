@@ -104,10 +104,8 @@ $usuarios->match('/del/{id}', function ($id) use ($app) {
         $smw = new Etxea\SabreMW($app['db']);
         //Borramos todos los eventos del sabre
         $smw->delUser($usuario['username']);
-        //Borramos todo los eventos de ocupacion de servicios
-        $app['db']->delete('ocupacion_servicios',array('user_id'=>$usuario['id']));
-        //Borramos todo los eventos de ocupacion otras
-        $app['db']->delete('ocupacion_otros',array('user_id'=>$usuario['id']));
+        //Borramos todo los eventos de ocupacion
+        $app['db']->delete('ocupacion',array('user_id'=>$usuario['id']));
         //BOrraos el usuario
         $app['db']->delete('usuarios',array('id'=>$usuario['id']));
         return $app->redirect($app['url_generator']->generate('usuarios'));

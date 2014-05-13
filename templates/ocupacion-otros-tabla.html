@@ -17,7 +17,7 @@
     <th class="center" {% if dia.festivo == 1 %} style="color:#ff0000; background:#f3e4e4;" {%endif%} >{{dia.dia_mes}}</th>
     {% for ocupacion in dia.ocupaciones %}
     <td class="center" {% if dia.festivo == 1 %} style="background:#f3e4e4;" {%endif%}>
-        <input id="check_{{dia.dia_mes}}_{{ocupacion.user_id}}" type="checkbox" name="" value="" 
+        <input id="checkbox_{{ocupacion.dia}}_{{ocupacion.user_id}}" type="checkbox" name="" value="" 
         {% if ocupacion.activo == 1 %} checked {% endif %}
         {% if dia.festivo == 1 %} disabled {% endif %}
         onchange="cambio_check_ocupaciones.call(this, '{{ocupacion.dia}}', '{{ocupacion.user_id}}' );"/>

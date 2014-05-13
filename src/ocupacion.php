@@ -34,13 +34,15 @@ $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$d
         //$lista_ocupacion[$servicio['nombre_corto']] = array();
         foreach($lista_usuarios as $usuario) {
             //echo "Buscando la ocupacio del usuario ".$usuario['username']." en el servicio ".$servicio['nombre_corto'];
-            $ocupado = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion_servicios WHERE user_id = ? AND servicio_id = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$dia->format("Ymd")));
+            $ocupado = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 1 AND tipo_servicio = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$dia->format("Ymd")));
+            $ocupado_otro = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 2 AND tipo_servicio = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$dia->format("Ymd")));
             //var_dump($ocupado);
             $lista_ocupacion[$servicio['nombre_corto']][$usuario['username']] = array(
                 "dia" => $dia->format("Ymd"),
                 "user_id" => $usuario['id'],
                 "servicio_id" => $servicio['id'],
-                "activo" => $ocupado['activo']
+                "activo" => $ocupado['activo'],
+                "otro_ocupado" => $ocupado_otro['activo']
                 );
         }
     }
@@ -70,7 +72,7 @@ $ocupacion->match('/servicio/add/{id_user}/{id_servicio}/{fecha}/', function ($i
     $calendar_id = $smw->getUserCalendar($user['username']);
     $evento = $smw->addEvent($calendar_id,$servicio['nombre'],$servicio['nombre_corto'],$fecha);
     //Lo guardamos en BBDD
-    $app['db']->insert('ocupacion_servicios',array('user_id'=>$id_user,'servicio_id'=>$id_servicio,'fecha'=>$fecha,'caldav_id'=>$evento));
+    $app['db']->insert('ocupacion',array('user_id'=>$id_user,'tipo_ocupacion'=>1,'tipo_servicio'=>$id_servicio,'fecha'=>$fecha,'caldav_id'=>$evento));
     return $app->json(array("estado"=> "ok", 
         "mensaje"=> "Agregado la ocupación el ".$fecha." al usuario".$id_user." en el servicio ".$id_servicio." con el ID en caldav ".$evento));
 })
@@ -85,11 +87,11 @@ $ocupacion->match('/servicio/add/{id_user}/{id_servicio}/{fecha}/', function ($i
 $ocupacion->match('/servicio/del/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$id_servicio,$fecha) use ($app) {
     $smw = new Etxea\SabreMW($app['db']);
     //Lo buscamos  en BBDD porque necesitamos el caldav_id
-    $ocupacion = $app['db']->fetchAssoc('SELECT * FROM ocupacion_servicios WHERE user_id = ? AND servicio_id = ? AND fecha = ?',array($id_user,$id_servicio,$fecha));
+    $ocupacion = $app['db']->fetchAssoc('SELECT * FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 1 AND tipo_servicio = ? AND fecha = ?',array($id_user,$id_servicio,$fecha));
     //Lo borramos en el CalDAV
     $smw->delEvent($ocupacion['caldav_id']);
     //Lo borramos en la BBDD
-    $ret = $app['db']->delete('ocupacion_servicios',array('id'=>$ocupacion['id']));
+    $ret = $app['db']->delete('ocupacion',array('id'=>$ocupacion['id']));
     if ($ret == 1 ) {
         return $app->json(array("estado"=> "ok", 
             "mensaje"=> "Eliminado la ocupacion del usuario ".$id_user." al servicio ".$id_servicio." el dia ".$fecha));
@@ -136,7 +138,7 @@ $ocupacion->get('/otros/{tipo}/{ano}/{mes}/', function ($tipo,$ano,$mes) use ($a
         
         foreach($lista_usuarios as  $usuario) {
             //echo 'SELECT count(*) AS activo FROM ocupacion_otros WHERE user_id = '.$usuario['id'].' AND tipo = '.$tipo.' AND fecha = '.$dia->format("Ymd") ."<br>";
-            $activo = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion_otros WHERE user_id = ? AND tipo = ? AND fecha = ?',array($usuario['id'],$tipo,$dia->format("Ymd")));
+            $activo = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 2 AND tipo_otro = ? AND fecha = ?',array($usuario['id'],$tipo,$dia->format("Ymd")));
             $lista_ocupaciones[$dia->format("Ymd")]['ocupaciones'][$usuario['username']]= array(
                 "dia" => $dia->format("Ymd"),
                 "user_id" => $usuario['id'],
@@ -158,6 +160,12 @@ $ocupacion->get('/otros/{tipo}/{ano}/{mes}/', function ($tipo,$ano,$mes) use ($a
  * Añadimos un día de ocupacion.
  */
 $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id_usuario,$fecha) use ($app) {
+    //Compramos si ya tiene ocupacion ese día
+    $respuesta = $app['db']->fetchAssoc('SELECT count(*) AS ocupado FROM ocupacion WHERE user_id = ? AND fecha = ?',array($id_usuario,$fecha));
+    if ($respuesta['ocupado'] > 0) {
+        return $app->json(array("estado"=> "ko", 
+        "mensaje"=> "Ya tiene programado el día con un vaciación, graciable, ... Por favor primero libere el día ".$fecha));
+    }
     //Lo guardamos en el CalDAV
     $smw = new Etxea\SabreMW($app['db']);
     $user = $app['db']->fetchAssoc('SELECT * FROM usuarios WHERE id = ?',array($id_usuario));
@@ -166,7 +174,7 @@ $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
     $calendar_id = $smw->getUserCalendar($user['username']);
     $evento = $smw->addEvent($calendar_id,$tipos[$tipo],$tipos[$tipo],$fecha);
     //Lo guardamos en BBDD
-    $app['db']->insert('ocupacion_otros',array('user_id'=>$id_usuario,'tipo'=>$tipo,'fecha'=>$fecha,'caldav_id'=>$evento));
+    $app['db']->insert('ocupacion',array('user_id'=>$id_usuario, 'tipo_ocupacion' => 2,'tipo_otro'=>$tipo,'fecha'=>$fecha,'caldav_id'=>$evento));
     return $app->json(array("estado"=> "ok", 
         "mensaje"=> "Agregado la ocupación de tipo ".$tipos[$tipo]." el ".$fecha." al usuario ".$id_usuario." con el ID en caldav ".$evento));
 })
@@ -183,11 +191,11 @@ $ocupacion->match('/otros/del/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
     $tipos = array(1=>"Vacaciones",2=>"Graciables",3=>"Baja laboral",4=>"Congreso",5=>"Ivestigacion",6=>"Reunion");
     $smw = new Etxea\SabreMW($app['db']);
     //Lo buscamos  en BBDD porque necesitamos el caldav_id
-    $ocupacion = $app['db']->fetchAssoc('SELECT * FROM ocupacion_otros WHERE user_id = ? AND tipo = ? AND fecha = ?',array($id_usuario,$tipo,$fecha));
+    $ocupacion = $app['db']->fetchAssoc('SELECT * FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 2 AND tipo_otro = ? AND fecha = ?',array($id_usuario,$tipo,$fecha));
     //Lo borramos en el CalDAV
     $smw->delEvent($ocupacion['caldav_id']);
     //Lo borramos en la BBDD
-    $ret = $app['db']->delete('ocupacion_otros',array('id'=>$ocupacion['id']));
+    $ret = $app['db']->delete('ocupacion',array('id'=>$ocupacion['id']));
     if ($ret == 1 ) {
         return $app->json(array("estado"=> "ok", 
             "mensaje"=> "Eliminado la ocupacion del usuario ".$id_usuario." del tipo ".$tipos[$tipo]." el dia ".$fecha));
