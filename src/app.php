@@ -51,6 +51,16 @@ class UrogesUserProvider implements UserProviderInterface
     }
 }
 
+// Set language to French
+putenv('LC_ALL=es_ES');
+setlocale(LC_ALL, 'es_ES');
+
+// Specify the location of the translation tables
+bindtextdomain('uroges', 'includes/locale');
+bind_textdomain_codeset('uroges', 'UTF-8');
+
+// Choose domain
+textdomain('uroges');
 
 $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());
@@ -62,7 +72,20 @@ $app->register(new ServiceControllerServiceProvider());
 $app->register(new TwigServiceProvider());
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     // add custom globals, filters, tags, ...
-
+    //$twig->addExtension(new Twig_Extensions_Extension_I18n());
+    $filter = new Twig_SimpleFilter('traducir_dia_semana', function ($string) {
+        $traducir = array( 'Monday'=>'Lunes',
+                           'Tuesday' => 'Martes',
+                           'Wednesday' => 'Miercoles',
+                           'Thursday'=> 'Jueves',
+                           'Friday'=> 'Viernes',
+                           'Saturday'=> 'Sabado',
+                           'Sunday'=> 'Domingo'
+        );
+        return $traducir["$string"];
+        
+    });
+    $twig->addFilter($filter);
     return $twig;
 }));
 

@@ -111,9 +111,29 @@ th {font-weight: normal;}
 <script src="{{ app.request.basepath }}/js/jquery.slimscroll.min.js"></script> <!-- jQuery SlimScroll -->
 <script src="{{ app.request.basepath }}/js/custom.js"></script> <!-- Custom codes -->
 <script src="{{ app.request.basepath }}/js/cal.js"></script> <!-- Index Javascripts -->
-<!-- dtepicker sacado de http://jsfiddle.net/NCHtH/19/ via http://stackoverflow.com/questions/16887722/highlighting-an-entire-week-in-datepicker-jquery-ui-1-10-x-and-jquery-1-9-x -->
+
+<!-- datepicker sacado de http://jsfiddle.net/NCHtH/19/ via http://stackoverflow.com/questions/16887722/highlighting-an-entire-week-in-datepicker-jquery-ui-1-10-x-and-jquery-1-9-x -->
 <script>
 $(document).ready(function () {
+    //Lo ponemos en cristiano segun http://reviblog.net/2014/01/07/jquery-ui-datepicker-poner-el-calendario-en-espanol-euskera-o-cualquier-otro-idioma/
+     $.datepicker.regional['es'] = {
+ closeText: 'Cerrar',
+ prevText: '<Ant',
+ nextText: 'Sig>',
+ currentText: 'Hoy',
+ monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+ monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+ dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+ dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+ dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+ weekHeader: 'Sm',
+ dateFormat: 'dd/mm/yy',
+ firstDay: 1,
+ isRTL: false,
+ showMonthAfterYear: false,
+ yearSuffix: ''
+ };
+ $.datepicker.setDefaults($.datepicker.regional['es']);
     var startDate,
         endDate,
         selectCurrentWeek = function () {

@@ -55,10 +55,14 @@ function cambio_check_ocupacion(user_id, servicio_id, dia) {
 }
 
 function cambiar_semana(dateString) {
-    var d = new Date(dateString);
+    /*var d = new Date(dateString);
     ano = d.getFullYear();
     mes = d.getMonth()+1; //devuelve los meses empezando en 0 !
-    dia = d.getDate();
+    dia = d.getDate();*/
+    res = dateString.split("/");
+    dia = res[0];
+    mes = res[1];
+    ano = res[2];
     console.log("Vamos a cambiar de semana a "+ano+" "+mes+" "+dia+" que era el string "+dateString);
     cargar_tabla_ocupacion(ano,mes,dia);
 }

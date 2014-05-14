@@ -2,7 +2,7 @@
 {% for d in semana %}
     <li>
         <a href="#" onclick="cargar_tabla_ocupacion({{d.format('Y')}},{{d.format('m')}},{{d.format('d')}});" data-toggle="tab">
-            {{d}} ({{d.format('Ymd')}})
+            {{d|traducir_dia_semana}} ({{d.format('dmY')}})
         </a>
     </li>
 {% endfor %}
@@ -23,7 +23,7 @@
 
 <table class="table table-striped table-bordered table-hover">
 <tr>
-<th>{{ano}}/{{mes}}/{{dia}}&nbsp;</th>
+<th>{{dia}}/{{mes}}/{{ano}}&nbsp;</th>
 {% for usuario in lista_usuarios %}
 <th class="center">{{ usuario.username}}</th>
 {% endfor %}
