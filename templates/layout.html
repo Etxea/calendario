@@ -111,7 +111,52 @@ th {font-weight: normal;}
 <script src="{{ app.request.basepath }}/js/jquery.slimscroll.min.js"></script> <!-- jQuery SlimScroll -->
 <script src="{{ app.request.basepath }}/js/custom.js"></script> <!-- Custom codes -->
 <script src="{{ app.request.basepath }}/js/cal.js"></script> <!-- Index Javascripts -->
-
+<!-- dtepicker sacado de http://jsfiddle.net/NCHtH/19/ via http://stackoverflow.com/questions/16887722/highlighting-an-entire-week-in-datepicker-jquery-ui-1-10-x-and-jquery-1-9-x -->
+<script>
+$(document).ready(function () {
+    var startDate,
+        endDate,
+        selectCurrentWeek = function () {
+            window.setTimeout(function () {
+                $('#weekpicker').datepicker('widget').find('.ui-datepicker-current-day a').addClass('ui-state-active')
+            }, 1);
+        };
+    $('#weekpicker').datepicker({
+        "showOtherMonths": false,
+        "selectOtherMonths": false,
+        "onSelect": function (dateText, inst) {
+            var date = $(this).datepicker('getDate'),
+                dateFormat = inst.settings.dateFormat || $.datepicker._defaults.dateFormat;
+            startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay());
+            endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 6);
+            $('#weekpicker').val($.datepicker.formatDate(dateFormat, startDate, inst.settings) + ' - ' + $.datepicker.formatDate(dateFormat, endDate, inst.settings));
+            selectCurrentWeek();
+            console.log("A cambiado la fecha, llameos a la funcion con "+dateText);
+            cambiar_semana(dateText);
+            
+        },
+        "beforeShow": function () {
+            selectCurrentWeek();
+        },
+        "beforeShowDay": function (date) {
+            var cssClass = '';
+            if (date >= startDate && date <= endDate) {
+                cssClass = 'ui-datepicker-current-day';
+            }
+            return [true, cssClass];
+        },
+        "onChangeMonthYear": function (year, month, inst) {
+            selectCurrentWeek();
+        }
+    }).datepicker('widget').addClass('ui-weekpicker');
+    $('.ui-weekpicker').on('mousemove', 'tr', function () {
+        $(this).find('td a').addClass('ui-state-hover');
+    });
+    $('.ui-weekpicker').on('mouseleave', 'tr', function () {
+        $(this).find('td a').removeClass('ui-state-hover');
+    });
+});
+</script>
 {% block extra_scripts %}{% endblock %}
 
 </body>

@@ -24,7 +24,7 @@ $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$d
     //Usamos la librería calendr para sacar los días del la semana
     $lista_dias = $app['calendr']->getWeek($ano,$weeknumber);
     //var_dump($lista_dias);
-    $dia = $app['calendr']->getDay($ano,$mes,$dia);
+    $fecha = $app['calendr']->getDay($ano,$mes,$dia);
     //var_dump($calendario_mes);
     $lista_usuarios = $app['db']->fetchAll('SELECT * FROM users WHERE borrado <> 1 ORDER BY username ASC');
     $lista_servicios = $app['db']->fetchAll('SELECT servicios.id AS id ,servicios_tipo.nombre AS tipo, servicios.nombre AS nombre, estado, nombre_corto FROM servicios, servicios_tipo WHERE servicios.tipo = servicios_tipo.id ORDER BY servicios.id ASC');
@@ -34,11 +34,11 @@ $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$d
         //$lista_ocupacion[$servicio['nombre_corto']] = array();
         foreach($lista_usuarios as $usuario) {
             //echo "Buscando la ocupacio del usuario ".$usuario['username']." en el servicio ".$servicio['nombre_corto'];
-            $ocupado = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 1 AND tipo_servicio = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$dia->format("Ymd")));
-            $ocupado_otro = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 2 AND tipo_servicio = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$dia->format("Ymd")));
+            $ocupado = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 1 AND tipo_servicio = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$fecha->format("Ymd")));
+            $ocupado_otro = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 2 AND tipo_servicio = ? AND fecha = ?',array($usuario['id'],$servicio['id'],$fecha->format("Ymd")));
             //var_dump($ocupado);
             $lista_ocupacion[$servicio['nombre_corto']][$usuario['username']] = array(
-                "dia" => $dia->format("Ymd"),
+                "dia" => $fecha->format("Ymd"),
                 "user_id" => $usuario['id'],
                 "servicio_id" => $servicio['id'],
                 "activo" => $ocupado['activo'],
@@ -48,10 +48,10 @@ $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$d
     }
     //var_dump($lista_ocupacion);
     if ($estatico == 0) {
-        return $app['twig']->render('ocupacion-tabla.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion,'semana'=>$lista_dias));
+        return $app['twig']->render('ocupacion-tabla.html',array('ano'=>$ano,'mes'=> $mes,'dia'=>$dia,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion,'semana'=>$lista_dias));
     }
     elseif ($estatico == 1) {
-        return $app['twig']->render('ocupacion-tabla-estatica.html',array('ano'=>$ano,'mes'=> $mes,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion,'semana'=>$lista_dias));
+        return $app['twig']->render('ocupacion-tabla-estatica.html',array('ano'=>$ano,'mes'=> $mes,'dia'=>$dia,'lista_usuarios'=>$lista_usuarios,'lista_servicios'=>$lista_servicios,'lista_ocupacion'=>$lista_ocupacion,'semana'=>$lista_dias));
     }
 })
 ->bind('ocupacion-servicio-html')

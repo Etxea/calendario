@@ -22,6 +22,16 @@ function cargar_tabla_ocupacion_estatica(ano,mes,dia) {
         $( "#div_tabla_ocupacion" ).append( data );
         });
 };
+
+function cambiar_semana(dateString) {
+    var d = new Date(dateString);
+    ano = d.getFullYear();
+    mes = d.getMonth()+1; //devuelve los meses empezando en 0 !
+    dia = d.getDate();
+    console.log("Vamos a cambiar de semana a "+ano+" "+mes+" "+dia+" que era el string "+dateString);
+    cargar_tabla_ocupacion_estatica(ano,mes,dia);
+}
+
 </script>
 {% endblock %}
 
@@ -34,10 +44,13 @@ function cargar_tabla_ocupacion_estatica(ano,mes,dia) {
 <h2 class="pull-left">Programado</h2>
 
 		<!-- Muestra el Datapicker -->
+        <i class="fa fa-calendar pull-right"></i><input class="pull-right" type="text" id="weekpicker" required="required" name="newsdate" />
+        <!--
            <div id="reportrange" class="pull-right">
               <i class="fa fa-calendar"></i>
               <span></span> <b class="caret"></b>
            </div>
+           -->
 
 <div class="clearfix"></div>
 

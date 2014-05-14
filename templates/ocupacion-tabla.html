@@ -1,8 +1,8 @@
 <ul id="myTab" class="nav nav-tabs">
-{% for dia in semana %}
+{% for d in semana %}
     <li>
-        <a href="#" onclick="cargar_tabla_ocupacion({{dia.format('Y')}},{{dia.format('m')}},{{dia.format('d')}});" data-toggle="tab">
-            {{dia}} ({{dia.format('Ymd')}})
+        <a href="#" onclick="cargar_tabla_ocupacion({{d.format('Y')}},{{d.format('m')}},{{d.format('d')}});" data-toggle="tab">
+            {{d}} ({{d.format('Ymd')}})
         </a>
     </li>
 {% endfor %}
@@ -23,7 +23,7 @@
 
 <table class="table table-striped table-bordered table-hover">
 <tr>
-<th>&nbsp;</th>
+<th>{{ano}}/{{mes}}/{{dia}}&nbsp;</th>
 {% for usuario in lista_usuarios %}
 <th class="center">{{ usuario.username}}</th>
 {% endfor %}
