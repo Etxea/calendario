@@ -20,6 +20,20 @@ $app->get('/', function () use ($app) {
 ->bind('homepage')
 ;
 
+$app->get('/logout', function () use ($app) {
+    $app['session']->clear();
+    return $app->redirect( $app['url_generator']->generate( 'homepage' ) );
+})
+->bind('logout')
+;
+/*
+$app->get('/login', function () use ($app) {
+    $app['session']->clear();
+    return $app->redirect( $app['url_generator']->generate( 'login' ) );
+})
+->bind('login')
+; */
+
 $app->get('/{ano}/{semana}/', function ($ano,$semana) use ($app) {
     $semana_obj = $app['calendr']->getWeek($ano,$semana);
     $inicio_semana=$semana_obj->getBegin();

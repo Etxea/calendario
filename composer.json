@@ -28,7 +28,7 @@
         "etxea/sabremw": "dev-master" 
     },
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-0": { "Uroges": "src/" }
     },
     "extra": {
         "branch-alias": {

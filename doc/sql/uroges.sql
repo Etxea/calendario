@@ -90,7 +90,7 @@ CREATE TABLE `calendarobjects` (
   `lastoccurence` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `calendarid` (`calendarid`,`uri`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,6 +99,7 @@ CREATE TABLE `calendarobjects` (
 
 LOCK TABLES `calendarobjects` WRITE;
 /*!40000 ALTER TABLE `calendarobjects` DISABLE KEYS */;
+INSERT INTO `calendarobjects` VALUES (18,'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 3.2.2//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nSUMMARY:Guardia\r\nDTSTART:20141230\r\nLOCATION:Guardi\r\nUID:53739aff14168\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nSUMMARY:Guardia\r\nDTSTART:20141230\r\nLOCATION:Guardi\r\nUID:53739aff14168\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n','53739aff14168.ics',3,NULL,'9dd572c6fea5f76f4ff80c631377872f',301,'VEVENT',1419897600,1419897600),(19,'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 3.2.2//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nSUMMARY:Guardia\r\nDTSTART:20140103\r\nLOCATION:Guardi\r\nUID:53739b026353a\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nSUMMARY:Guardia\r\nDTSTART:20140103\r\nLOCATION:Guardi\r\nUID:53739b026353a\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n','53739b026353a.ics',3,NULL,'eb777421638351b6483974cfedf84803',301,'VEVENT',1388707200,1388707200),(20,'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 3.2.2//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nSUMMARY:Graciables\r\nDTSTART:20140106\r\nLOCATION:Graciables\r\nUID:53739f7598642\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nSUMMARY:Graciables\r\nDTSTART:20140106\r\nLOCATION:Graciables\r\nUID:53739f7598642\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n','53739f7598642.ics',3,NULL,'fc6a56d646b825084fc67602e7da8c60',315,'VEVENT',1388966400,1388966400),(21,'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 3.2.2//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nSUMMARY:Baja laboral\r\nDTSTART:20140107\r\nLOCATION:Baja laboral\r\nUID:53739f8648c04\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nSUMMARY:Baja laboral\r\nDTSTART:20140107\r\nLOCATION:Baja laboral\r\nUID:53739f8648c04\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n','53739f8648c04.ics',3,NULL,'8497a88169890b662ac1a4b1d5f872d9',323,'VEVENT',1389052800,1389052800),(22,'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 3.2.2//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nSUMMARY:Congreso\r\nDTSTART:20140102\r\nLOCATION:Congreso\r\nUID:53739f948fd9f\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nSUMMARY:Congreso\r\nDTSTART:20140102\r\nLOCATION:Congreso\r\nUID:53739f948fd9f\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n','53739f948fd9f.ics',3,NULL,'957287400584407559550b586e0c0625',307,'VEVENT',1388620800,1388620800),(23,'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Sabre//Sabre VObject 3.2.2//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nSUMMARY:Reunion\r\nDTSTART:20140101\r\nLOCATION:Reunion\r\nUID:53739fa58b89d\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nSUMMARY:Reunion\r\nDTSTART:20140101\r\nLOCATION:Reunion\r\nUID:53739fa58b89d\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n','53739fa58b89d.ics',3,NULL,'02c64a098d7940543b27d6926b7e54f7',303,'VEVENT',1388534400,1388534400);
 /*!40000 ALTER TABLE `calendarobjects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,6 +133,7 @@ CREATE TABLE `calendars` (
 
 LOCK TABLES `calendars` WRITE;
 /*!40000 ALTER TABLE `calendars` DISABLE KEYS */;
+INSERT INTO `calendars` VALUES (3,'principals/pedro','default','default',0,NULL,0,NULL,NULL,'VEVENT,VTODO',0);
 /*!40000 ALTER TABLE `calendars` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -252,59 +254,35 @@ LOCK TABLES `locks` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ocupacion_otros`
+-- Table structure for table `ocupacion`
 --
 
-DROP TABLE IF EXISTS `ocupacion_otros`;
+DROP TABLE IF EXISTS `ocupacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ocupacion_otros` (
+CREATE TABLE `ocupacion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `tipo` varchar(12) NOT NULL,
   `fecha` date NOT NULL,
   `caldav_id` int(11) NOT NULL,
   `modificiacion_user_id` int(11) NOT NULL,
   `modificiacion_fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `tipo_ocupacion` int(11) NOT NULL,
+  `tipo_servicio` int(11) NOT NULL DEFAULT '0',
+  `tipo_otro` int(11) NOT NULL DEFAULT '0',
+  `borrado` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ocupacion_otros`
+-- Dumping data for table `ocupacion`
 --
 
-LOCK TABLES `ocupacion_otros` WRITE;
-/*!40000 ALTER TABLE `ocupacion_otros` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ocupacion_otros` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `ocupacion_servicios`
---
-
-DROP TABLE IF EXISTS `ocupacion_servicios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ocupacion_servicios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `servicio_id` int(11) NOT NULL,
-  `fecha` date NOT NULL,
-  `caldav_id` int(11) NOT NULL,
-  `modificiacion_user_id` int(11) NOT NULL,
-  `modificiacion_fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ocupacion_servicios`
---
-
-LOCK TABLES `ocupacion_servicios` WRITE;
-/*!40000 ALTER TABLE `ocupacion_servicios` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ocupacion_servicios` ENABLE KEYS */;
+LOCK TABLES `ocupacion` WRITE;
+/*!40000 ALTER TABLE `ocupacion` DISABLE KEYS */;
+INSERT INTO `ocupacion` VALUES (4,2,'2014-01-06',6,0,'2014-05-13 13:36:30',2,0,1,0),(7,2,'2014-01-02',9,0,'2014-05-13 15:27:00',2,0,1,0),(10,2,'2014-01-01',12,0,'2014-05-13 15:28:18',2,0,1,0),(11,2,'2014-01-03',13,0,'2014-05-13 15:31:05',2,0,1,0),(12,2,'2014-01-07',14,0,'2014-05-13 15:31:07',2,0,1,0),(13,2,'2014-01-08',15,0,'2014-05-13 15:31:09',2,0,1,0),(14,2,'2014-01-09',16,0,'2014-05-13 15:31:11',2,0,1,0),(15,2,'2014-01-10',17,0,'2014-05-13 15:31:13',2,0,1,0),(16,6,'2014-12-30',18,0,'2014-05-14 16:34:07',1,4,0,0),(17,6,'2014-01-03',19,0,'2014-05-14 16:34:10',1,4,0,0),(18,6,'2014-01-06',20,0,'2014-05-14 16:53:09',2,0,2,0),(19,6,'2014-01-07',21,0,'2014-05-14 16:53:26',2,0,3,0),(20,6,'2014-01-02',22,0,'2014-05-14 16:53:40',2,0,4,0),(21,6,'2014-01-01',23,0,'2014-05-14 16:53:57',2,0,6,0);
+/*!40000 ALTER TABLE `ocupacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -322,7 +300,7 @@ CREATE TABLE `principals` (
   `vcardurl` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uri` (`uri`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,6 +309,7 @@ CREATE TABLE `principals` (
 
 LOCK TABLES `principals` WRITE;
 /*!40000 ALTER TABLE `principals` DISABLE KEYS */;
+INSERT INTO `principals` VALUES (4,'principals/pedro',NULL,'pedro',NULL);
 /*!40000 ALTER TABLE `principals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -396,11 +375,17 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) DEFAULT NULL,
-  `digesta1` varchar(32) DEFAULT NULL,
+  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `digesta1` varchar(32) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `roles` int(11) NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `apellidos` varchar(250) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `categoria` int(11) NOT NULL,
+  `borrado` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -409,37 +394,8 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin','db8a91a2a33f13217b286ade30f7d933',1,'admin','admin','u9iB2qOrCfPB27Ln2utmJKOqFOq/gBTLqG7XdzuUiuPJAN06uRoM7t5oqau1CrfP5oDbmvhbVpFgointNgXfmw==',1,0),(6,'pedro','15aa72138a38091fb4d7b1d2c80c33f6',0,'pedro','pedor','3QD4KXn/OFvbbcl5KA22xFOnaMId2KSAVTa3Kdqcj+45/bMPioBjN1BavMs+JDoCIcR2SopurJdeSkM5+tXLpg==',1,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `usuarios`
---
-
-DROP TABLE IF EXISTS `usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `usuarios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `apellidos` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `categoria` int(11) NOT NULL,
-  `rol` int(11) NOT NULL,
-  `username` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuarios`
---
-
-LOCK TABLES `usuarios` WRITE;
-/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin','admin admin',1,1,'admin','admin');
-/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -451,4 +407,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-09 16:56:55
+-- Dump completed on 2014-05-14 18:54:37

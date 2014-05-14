@@ -48,7 +48,7 @@
 
 <tr>
     <td>{{usuario.username}}</td><td>{{usuario.apellidos}},{{ usuario.nombre }} </td>
-    <td>{{ usuario.categoria }}</td><td><span class="label label-success">{{ usuario.rol }}</span></td>
+    <td>{{ usuario.categoria }}</td><td><span class="label label-success">{{ usuario.roles }}</span></td>
     <td>
         <a href="{{ url('usuarios-editar',{'id': usuario.id})}}"><button class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> </button></a> 
         <a href="{{ url('usuarios-borrar',{'id': usuario.id})}}"><button class="btn btn-xs btn-danger"><i class="fa fa-times-circle"></i> </button></a>

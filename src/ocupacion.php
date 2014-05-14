@@ -26,7 +26,7 @@ $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$d
     //var_dump($lista_dias);
     $dia = $app['calendr']->getDay($ano,$mes,$dia);
     //var_dump($calendario_mes);
-    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM usuarios ORDER BY username ASC');
+    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM users WHERE borrado <> 1 ORDER BY username ASC');
     $lista_servicios = $app['db']->fetchAll('SELECT servicios.id AS id ,servicios_tipo.nombre AS tipo, servicios.nombre AS nombre, estado, nombre_corto FROM servicios, servicios_tipo WHERE servicios.tipo = servicios_tipo.id ORDER BY servicios.id ASC');
     $lista_ocupacion = array();
     foreach($lista_servicios as $servicio){
@@ -65,9 +65,15 @@ $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$d
  * Añadimos un día de ocupaciones.
  */
 $ocupacion->match('/servicio/add/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$id_servicio,$fecha) use ($app) {
+    //Compramos si ya tiene ocupacion ese día
+    $respuesta = $app['db']->fetchAssoc('SELECT count(*) AS ocupado FROM ocupacion WHERE user_id = ? AND fecha = ?',array($id_usuario,$fecha));
+    if ($respuesta['ocupado'] > 0) {
+        return $app->json(array("estado"=> "ko", 
+        "mensaje"=> "Ya tiene programado algúna vacacion, graciable,... el día ".$fecha));
+    }
     //Lo guardamos en el CalDAV
     $smw = new Etxea\SabreMW($app['db']);
-    $user = $app['db']->fetchAssoc('SELECT * FROM usuarios WHERE id = ?',array($id_user));
+    $user = $app['db']->fetchAssoc('SELECT * FROM users WHERE id = ?',array($id_user));
     $servicio = $app['db']->fetchAssoc('SELECT * FROM servicios WHERE id = ?',array($id_servicio));
     $calendar_id = $smw->getUserCalendar($user['username']);
     $evento = $smw->addEvent($calendar_id,$servicio['nombre'],$servicio['nombre_corto'],$fecha);
@@ -123,7 +129,7 @@ $ocupacion->get('/otros/{tipo}/{ano}/{mes}/', function ($tipo,$ano,$mes) use ($a
     //Usamos la librería calendr para sacar los días del mes y año
     $calendario_mes = $app['calendr']->getMonth($ano, $mes);
     //var_dump($calendario_mes);
-    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM usuarios');
+    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM users WHERE borrado <> 1 ORDER BY username ASC');
     //recorremos los días del mes
     foreach($calendario_mes->getDays()  as $dia) {
         $lista_ocupaciones[$dia->format("Ymd")] = array();
@@ -164,11 +170,11 @@ $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
     $respuesta = $app['db']->fetchAssoc('SELECT count(*) AS ocupado FROM ocupacion WHERE user_id = ? AND fecha = ?',array($id_usuario,$fecha));
     if ($respuesta['ocupado'] > 0) {
         return $app->json(array("estado"=> "ko", 
-        "mensaje"=> "Ya tiene programado el día con un vaciación, graciable, ... Por favor primero libere el día ".$fecha));
+        "mensaje"=> "Ya tiene programado algún un servicio el día ".$fecha));
     }
     //Lo guardamos en el CalDAV
     $smw = new Etxea\SabreMW($app['db']);
-    $user = $app['db']->fetchAssoc('SELECT * FROM usuarios WHERE id = ?',array($id_usuario));
+    $user = $app['db']->fetchAssoc('SELECT * FROM users WHERE id = ?',array($id_usuario));
     //FIXME esto a BBDD o conf!
     $tipos = array(1=>"Vacaciones",2=>"Graciables",3=>"Baja laboral",4=>"Congreso",5=>"Ivestigacion",6=>"Reunion");
     $calendar_id = $smw->getUserCalendar($user['username']);

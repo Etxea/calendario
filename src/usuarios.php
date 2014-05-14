@@ -6,7 +6,7 @@ include_once "../vendor/etxea/sabremw/lib/SabreMW/SabreMW.php";
 
 $usuarios = $app['controllers_factory'];
 $usuarios->get('/', function () use ($app) {
-    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM usuarios');
+    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM users WHERE borrado <> 1');
     return $app['twig']->render('usuarios.html', array('lista_usuarios'=>$lista_usuarios));
 })
 ->bind('usuarios')
@@ -22,7 +22,7 @@ $usuarios->match('/alta', function () use ($app) {
             'choices' => array(1 => 'Jefe de servicio/sección', 2 => 'Adjunto', 3 => 'Residente'),
             'expanded' => true,
         ))
-        ->add('rol', 'choice', array(
+        ->add('roles', 'choice', array(
             'choices' => array(0 => 'estandar', 1 => 'administrador'),
             'expanded' => true,
         ))
@@ -32,14 +32,20 @@ $usuarios->match('/alta', function () use ($app) {
         $form->bind($app['request']);
         if ($form->isValid()) {
             $data = $form->getData();
-            //ahora a actualizar la BBDD
-            unset($data['id']);
-            $app['db']->insert('usuarios',$data);
-            $mensaje = "usuario creado";
+           
+            // La pass para Sabre
+            $digesta1 = md5($data['username'].':SabreDAV:'.$data['password']);
+            $data['digesta1'] = $digesta1;
+            //Codificimaos la pass
+            $password =  $app['security.encoder.digest']->encodePassword($data['password'], '');
+            $data['password'] = $password;
+            $app['db']->insert('users',$data);
             //Vamos con el alta en CalDAV
             $smw = new Etxea\SabreMW($app['db']);
-            $smw->addUser($data['username'],$data['password']);
+            $smw->addUser($data['username']);
+            $mensaje = "Usuario creado";
             return $app->redirect($app['url_generator']->generate('usuarios'));
+            
         } else {
             $mensaje = "Formulario mal";
         }
@@ -52,7 +58,7 @@ $usuarios->match('/alta', function () use ($app) {
 ;
 
 $usuarios->match('/editar/{id}', function ($id) use ($app) {
-    $usuario = $app['db']->fetchAssoc('SELECT * FROM usuarios WHERE id = ?',array($id));
+    $usuario = $app['db']->fetchAssoc('SELECT * FROM users WHERE id = ?',array($id));
     $form = $app['form.factory']->createBuilder('form', $usuario)
         ->add('nombre')
         ->add('apellidos')
@@ -62,7 +68,7 @@ $usuarios->match('/editar/{id}', function ($id) use ($app) {
             'choices' => array(1 => 'Jefe de servicio/sección', 2 => 'Adjunto', 3 => 'Residente'),
             'expanded' => true,
         ))
-        ->add('rol', 'choice', array(
+        ->add('roles', 'choice', array(
             'choices' => array(0 => 'estandar', 1 => 'administrador'),
             'expanded' => true,
         ))
@@ -74,13 +80,19 @@ $usuarios->match('/editar/{id}', function ($id) use ($app) {
             $data = $form->getData();
             //ahora a actualizar la BBDD
             unset($data['id']);
+            // La pass para Sabre
+            $digesta1 = md5($data['username'].':SabreDAV:'.$data['password']);
+            $data['digesta1'] = $digesta1;
             
+            //Codificimaos la pass
+            $password =  $app['security.encoder.digest']->encodePassword($data['password'], '');
+            $data['password'] = $password;
             
-            $app['db']->update('usuarios',$data,array('id' => $id));
-            // hay que cambiar la pass en caldav.
-            //Primer generamos el password en md5
-            $pass_md5 = md5($data['username'].':SabreDAV:'.$data['password']);
-            $app['db']->update('users',array('username'=>$data['username'],'digesta1'=>$pass_md5),array('username',$data['username']));
+            //Lo editamos
+            var_dump($data);
+            $ret = $app['db']->update('users',$data,array('id'=>$id));
+            $mensaje = "Actualizado";
+            
             
         } else {
             $mensaje = "Formulario mal";
@@ -98,16 +110,17 @@ $usuarios->match('/editar/{id}', function ($id) use ($app) {
 
 
 $usuarios->match('/del/{id}', function ($id) use ($app) {
-    $usuario = $app['db']->fetchAssoc('SELECT * FROM usuarios WHERE id = ?',array($id));
+    $usuario = $app['db']->fetchAssoc('SELECT * FROM users WHERE id = ?',array($id));
     if ($app['request']->getMethod() == "POST" ) { //Si es post borramos
         $app['monolog']->addInfo("Vamos a borrar ".$usuario['username']);
         $smw = new Etxea\SabreMW($app['db']);
         //Borramos todos los eventos del sabre
         $smw->delUser($usuario['username']);
-        //Borramos todo los eventos de ocupacion
+        //FIXME esto deberia ser poner como borrado
+        //Borramos todo los eventos de ocupacion 
         $app['db']->delete('ocupacion',array('user_id'=>$usuario['id']));
-        //BOrraos el usuario
-        $app['db']->delete('usuarios',array('id'=>$usuario['id']));
+        //Borraos el usuario
+        $app['db']->update('users',array('borrado'=>1),array('id'=>$usuario['id']));
         return $app->redirect($app['url_generator']->generate('usuarios'));
     } else {
         return $app['twig']->render('usuarios-borrar.html',array("usuario"=>$usuario,'mensaje'=>"Confirmación"));

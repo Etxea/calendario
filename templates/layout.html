@@ -48,9 +48,9 @@ th {font-weight: normal;}
 <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation"> 
 <!-- Usuarios -->
 <ul class="nav navbar-nav pull-right">
-<li class="dropdown pull-right user-data"><a data-toggle="dropdown" class="dropdown-toggle" href="#"><img src="/img/user1.png"> Antón <span class="bold">Arruza</span> <b class="caret"></b></a>
+<li class="dropdown pull-right user-data"><a data-toggle="dropdown" class="dropdown-toggle" href="#"><img src="/img/user1.png"> {{ app.security.token.user.username }} <span class="bold">{{ app.security.token.user.username }}</span> <b class="caret"></b></a>
 <ul class="dropdown-menu">
-<li><a href="login.html"><i class="fa fa-key"></i> Logout</a></li>
+<li><a href="{{ url('logout')}}"><i class="fa fa-key"></i> Logout</a></li>
 </ul>
 </li>
 </ul>

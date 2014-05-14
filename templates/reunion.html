@@ -22,13 +22,18 @@ function cargar_tabla_ocupaciones_mes(mes) {
         });
 };
 
-//funcion que hace la peticion de cambiar un día festivo
-function cambiar_festivo(dia, user_id,activo) {
-    if (activo == 1) {
+//funcion que maneja el cambio del estado de un check
+function cambio_check_ocupaciones(dia, user_id) {
+    console.log("vamos a cambiar el día de reunion "+dia+" del usuario "+user_id );
+    //FIXME este if funciona al reves???
+    if (this.checked) {
+        console.log("Añadimos un día festivo");
         url_peticion = "/ocupacion/otros/add/6/"+user_id+"/"+dia+"/";
     } else {
+        console.log("Quitamos un día festivo");
         url_peticion = "/ocupacion/otros/del/6/"+user_id+"/"+dia+"/";
     }
+    
     $.ajax({
         url: url_peticion,
         cache: false
@@ -36,21 +41,15 @@ function cambiar_festivo(dia, user_id,activo) {
         })
         .done(function( data ) {
             alert(data.mensaje);
+            if ( data.estado == "ko" ) {
+                console.log("Deschekamos");
+                this.checked=false;
+                $("#checkbox_"+dia+"_"+user_id).prop("checked",false);
+                console.log("Descheado!");
+            }
+                
         }
     );
-}
-//funcion que maneja el cambio del estado de un check
-function cambio_check_ocupaciones(dia, user_id) {
-    console.log("vamos a cambiar el día de reunion "+dia+" del usuario "+user_id );
-    //FIXME este if funciona al reves???
-    if (this.checked) {
-        console.log("Añadimos un día festivo");
-        cambiar_festivo(dia, user_id,1);
-    } else {
-        console.log("Quitamos un día festivo");
-        cambiar_festivo(dia, user_id,0);
-    }
-    
 }
 
 </script>
