@@ -2,8 +2,8 @@
 
 $servicios = $app['controllers_factory'];
 $servicios->get('/', function () use ($app) {
-    $lista_servicios = $app['db']->fetchAll('SELECT servicios.id AS id ,servicios_tipo.nombre AS tipo, servicios.nombre AS nombre, estado, nombre_corto FROM servicios, servicios_tipo WHERE servicios.tipo = servicios_tipo.id ORDER BY servicios.id ASC');
-    
+    $lista_servicios = $app['db']->fetchAll('SELECT servicios.id AS id ,servicios_tipo.nombre AS tipo, servicios.nombre AS nombre, estado, nombre_corto, orden FROM servicios, servicios_tipo WHERE servicios.tipo = servicios_tipo.id ORDER BY servicios.orden ASC');
+
     $lista_tipos_servicios = $app['db']->fetchAll('SELECT * FROM servicios_tipo ORDER BY id ASC');
     return $app['twig']->render('servicios.html', array('lista_servicios'=>$lista_servicios,'lista_tipos_servicios'=>$lista_tipos_servicios));
 })
@@ -13,13 +13,13 @@ $servicios->get('/', function () use ($app) {
 
 $servicios->match('/alta', function () use ($app) {
     //Preparamos el listado para poder rellenar el choice_list del form
-    
+
     $tipo_servcios = array();
     $statement = $app['db']->executeQuery('SELECT id,nombre FROM servicios_tipo ORDER BY id ASC');
     while($tipo = $statement->fetch()) {
         $tipo_servcios[$tipo['id']]=$tipo['nombre'];
     }
-    
+
     $form = $app['form.factory']->createBuilder('form')
         ->add('nombre')
         ->add('nombre_corto')
@@ -31,8 +31,9 @@ $servicios->match('/alta', function () use ($app) {
             'choices' => array(1 => "activo", 0 => "Inactivo"),
 
         ))
+        ->add('orden')
         ->getForm();
-    
+
     if ($app['request']->getMethod() == "POST" ) {
         $form->bind($app['request']);
         if ($form->isValid()) {
@@ -40,7 +41,7 @@ $servicios->match('/alta', function () use ($app) {
             //ahora a actualizar la BBDD
             unset($data['id']);
             $app['db']->insert('servicios',$data);
-            $mensaje = "usuario creado";
+            $mensaje = "Servicio creado";
             return $app->redirect($app['url_generator']->generate('servicios'));
         } else {
             $mensaje = "Formulario mal";
@@ -61,7 +62,7 @@ $servicios->match('/editar/{id}', function ($id) use ($app) {
         $tipo_servcios[$tipo['id']]=$tipo['nombre'];
     }
     $servicio = $app['db']->fetchAssoc('SELECT * FROM servicios WHERE id = ?',array($id));
-    
+
     $form = $app['form.factory']->createBuilder('form', $servicio)
         ->add('nombre')        ->add('nombre_corto')
         ->add('tipo', 'choice', array(
@@ -72,6 +73,7 @@ $servicios->match('/editar/{id}', function ($id) use ($app) {
             'choices' => array(1 => "activo", 0 => "Inactivo"),
             'expanded' => true,
         ))
+        ->add('orden')
         ->getForm();
     if ($app['request']->getMethod() == "POST" ) {
         $form->bind($app['request']);
@@ -81,15 +83,16 @@ $servicios->match('/editar/{id}', function ($id) use ($app) {
             //ahora a actualizar la BBDD
             unset($data['id']);
             $app['db']->update('servicios',$data,array('id' => $id));
-            // hay que cambiar la pass en caldav
+            //FIXME hay que cambiar la pass en caldav
+            return $app->redirect($app['url_generator']->generate('servicios'));
         } else {
             $mensaje = "Formulario mal";
         }
     } else {
         $mensaje = "vamos a editar";
-        
+
     }
-    
+
     return $app['twig']->render('servicio-editar.html', array('id_usuario'=> $id ,'mensaje'=>$mensaje,'servicio'=>$servicio,'form' => $form->createView()));
 })
 ->bind('servicios-editar')
@@ -101,13 +104,13 @@ $servicios->match('/editar/{id}', function ($id) use ($app) {
  * Gestion d elos tipos de servicios
  */
 $servicios->match('/tipo/alta', function () use ($app) {
-    
+
     $form = $app['form.factory']->createBuilder('form')
         ->add('nombre')
         ->add('id')
         ->getForm();
     if ($app['request']->getMethod() == "POST" ) {
-        
+
         $form->bind($app['request']);
         if ($form->isValid()) {
             $data = $form->getData();
@@ -145,9 +148,9 @@ $servicios->match('/tipo/editar/{id}', function ($id) use ($app) {
         }
     } else {
         $mensaje = "vamos a editar";
-        
+
     }
-    
+
     return $app['twig']->render('servicio-tipo-editar.html', array('id_usuario'=> $id ,'mensaje'=>$mensaje,'servicio_tipo'=>$servicio_tipo,'form' => $form->createView()));
 })
 ->bind('servicios-tipo-editar')

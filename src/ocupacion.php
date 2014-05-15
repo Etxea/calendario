@@ -2,15 +2,15 @@
 /*
  * Controlador de la parte de ocupacion y programacion de los servicios
  */
- 
+
 $ocupacion = $app['controllers_factory'];
 
 //FIXME esto lod ebería hacer el autoload
 include_once "../vendor/etxea/sabremw/lib/SabreMW/SabreMW.php";
 
 /*
- * Devolvemos un HTML con la tabla de ocupacion usuario/servicio de un día. 
- * Esta tabla puede ser estatica (iconos) o dinámica (inputs tipo check). 
+ * Devolvemos un HTML con la tabla de ocupacion usuario/servicio de un día.
+ * Esta tabla puede ser estatica (iconos) o dinámica (inputs tipo check).
  * Con la dinamica llamamos vía AJAX a las funciones de añadir y borrar ocupación
  */
 $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$dia,$estatico) use ($app) {
@@ -26,8 +26,8 @@ $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$d
     //var_dump($lista_dias);
     $fecha = $app['calendr']->getDay($ano,$mes,$dia);
     //var_dump($calendario_mes);
-    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM users WHERE borrado <> 1 ORDER BY username ASC');
-    $lista_servicios = $app['db']->fetchAll('SELECT servicios.id AS id ,servicios_tipo.nombre AS tipo, servicios.nombre AS nombre, estado, nombre_corto FROM servicios, servicios_tipo WHERE servicios.tipo = servicios_tipo.id ORDER BY servicios.id ASC');
+    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM users WHERE borrado <> 1 ORDER BY orden ASC ,username ASC');
+    $lista_servicios = $app['db']->fetchAll('SELECT servicios.id AS id ,servicios_tipo.nombre AS tipo, servicios.nombre AS nombre, estado, nombre_corto,servicios.estado,servicios.orden FROM servicios, servicios_tipo WHERE servicios.tipo = servicios_tipo.id AND servicios.estado = 1  ORDER BY servicios.orden ASC');
     $lista_ocupacion = array();
     foreach($lista_servicios as $servicio){
         //echo "Buscando la ocupacio de cada usuario en el servicio ".$servicio['nombre_corto'];
@@ -68,7 +68,7 @@ $ocupacion->match('/servicio/add/{id_user}/{id_servicio}/{fecha}/', function ($i
     //Compramos si ya tiene ocupacion ese día
     $respuesta = $app['db']->fetchAssoc('SELECT count(*) AS ocupado FROM ocupacion WHERE user_id = ? AND fecha = ?',array($id_usuario,$fecha));
     if ($respuesta['ocupado'] > 0) {
-        return $app->json(array("estado"=> "ko", 
+        return $app->json(array("estado"=> "ko",
         "mensaje"=> "Ya tiene programado algúna vacacion, graciable,... el día ".$fecha));
     }
     //Lo guardamos en el CalDAV
@@ -79,7 +79,7 @@ $ocupacion->match('/servicio/add/{id_user}/{id_servicio}/{fecha}/', function ($i
     $evento = $smw->addEvent($calendar_id,$servicio['nombre'],$servicio['nombre_corto'],$fecha);
     //Lo guardamos en BBDD
     $app['db']->insert('ocupacion',array('user_id'=>$id_user,'tipo_ocupacion'=>1,'tipo_servicio'=>$id_servicio,'fecha'=>$fecha,'caldav_id'=>$evento));
-    return $app->json(array("estado"=> "ok", 
+    return $app->json(array("estado"=> "ok",
         "mensaje"=> "Agregado la ocupación el ".$fecha." al usuario".$id_user." en el servicio ".$id_servicio." con el ID en caldav ".$evento));
 })
 ->bind('ocupacion-servicio-add')
@@ -99,10 +99,10 @@ $ocupacion->match('/servicio/del/{id_user}/{id_servicio}/{fecha}/', function ($i
     //Lo borramos en la BBDD
     $ret = $app['db']->delete('ocupacion',array('id'=>$ocupacion['id']));
     if ($ret == 1 ) {
-        return $app->json(array("estado"=> "ok", 
+        return $app->json(array("estado"=> "ok",
             "mensaje"=> "Eliminado la ocupacion del usuario ".$id_user." al servicio ".$id_servicio." el dia ".$fecha));
     } else {
-        return $app->json(array("estado"=> "ko", 
+        return $app->json(array("estado"=> "ko",
             "mensaje"=> "No se ha podido eliminar la ocupacion del usuario ".$id_user." al servicio ".$id_servicio." el dia ".$fecha));
     }
 })
@@ -119,8 +119,8 @@ $ocupacion->match('/servicio/del/{id_user}/{id_servicio}/{fecha}/', function ($i
 
 
 /*
- * Devolvemos un HTML con la tabla de ocupacion usuario/servicio de un día. 
- * Esta tabla puede ser estatica (iconos) o dinámica (inputs tipo check). 
+ * Devolvemos un HTML con la tabla de ocupacion usuario/servicio de un día.
+ * Esta tabla puede ser estatica (iconos) o dinámica (inputs tipo check).
  * Con la dinamica llamamos vía AJAX a las funciones de añadir y borrar ocupación
  */
 $ocupacion->get('/otros/{tipo}/{ano}/{mes}/', function ($tipo,$ano,$mes) use ($app) {
@@ -129,19 +129,19 @@ $ocupacion->get('/otros/{tipo}/{ano}/{mes}/', function ($tipo,$ano,$mes) use ($a
     //Usamos la librería calendr para sacar los días del mes y año
     $calendario_mes = $app['calendr']->getMonth($ano, $mes);
     //var_dump($calendario_mes);
-    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM users WHERE borrado <> 1 ORDER BY username ASC');
+    $lista_usuarios = $app['db']->fetchAll('SELECT * FROM users WHERE borrado <> 1 ORDER BY orden ASC, username ASC');
     //recorremos los días del mes
     foreach($calendario_mes->getDays()  as $dia) {
         $lista_ocupaciones[$dia->format("Ymd")] = array();
         $lista_ocupaciones[$dia->format("Ymd")]['ocupaciones'] = array();
         $lista_ocupaciones[$dia->format("Ymd")]['festivo'] = 0 ;
-        
+
         $lista_ocupaciones[$dia->format("Ymd")]['dia_mes'] = $dia->format("d");
         //FIXME comprobar con el calendario laboral??
         if ($dia->__toString() == "Sunday" or $dia->__toString() == "Saturday") {
             $lista_ocupaciones[$dia->format("Ymd")]['festivo'] = 1 ;
         }
-        
+
         foreach($lista_usuarios as  $usuario) {
             //echo 'SELECT count(*) AS activo FROM ocupacion_otros WHERE user_id = '.$usuario['id'].' AND tipo = '.$tipo.' AND fecha = '.$dia->format("Ymd") ."<br>";
             $activo = $app['db']->fetchAssoc('SELECT count(*) AS activo FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 2 AND tipo_otro = ? AND fecha = ?',array($usuario['id'],$tipo,$dia->format("Ymd")));
@@ -169,7 +169,7 @@ $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
     //Compramos si ya tiene ocupacion ese día
     $respuesta = $app['db']->fetchAssoc('SELECT count(*) AS ocupado FROM ocupacion WHERE user_id = ? AND fecha = ?',array($id_usuario,$fecha));
     if ($respuesta['ocupado'] > 0) {
-        return $app->json(array("estado"=> "ko", 
+        return $app->json(array("estado"=> "ko",
         "mensaje"=> "Ya tiene programado algún un servicio el día ".$fecha));
     }
     //Lo guardamos en el CalDAV
@@ -181,7 +181,7 @@ $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
     $evento = $smw->addEvent($calendar_id,$tipos[$tipo],$tipos[$tipo],$fecha);
     //Lo guardamos en BBDD
     $app['db']->insert('ocupacion',array('user_id'=>$id_usuario, 'tipo_ocupacion' => 2,'tipo_otro'=>$tipo,'fecha'=>$fecha,'caldav_id'=>$evento));
-    return $app->json(array("estado"=> "ok", 
+    return $app->json(array("estado"=> "ok",
         "mensaje"=> "Agregado la ocupación de tipo ".$tipos[$tipo]." el ".$fecha." al usuario ".$id_usuario." con el ID en caldav ".$evento));
 })
 ->bind('ocupacio-otros-add')
@@ -203,10 +203,10 @@ $ocupacion->match('/otros/del/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
     //Lo borramos en la BBDD
     $ret = $app['db']->delete('ocupacion',array('id'=>$ocupacion['id']));
     if ($ret == 1 ) {
-        return $app->json(array("estado"=> "ok", 
+        return $app->json(array("estado"=> "ok",
             "mensaje"=> "Eliminado la ocupacion del usuario ".$id_usuario." del tipo ".$tipos[$tipo]." el dia ".$fecha));
     } else {
-        return $app->json(array("estado"=> "ko", 
+        return $app->json(array("estado"=> "ko",
             "mensaje"=> "No se ha podido eliminar la ocupacion del usuario ".$id_usuario." del ".$tipos[$tipo]." el dia ".$fecha));
     }
 })

@@ -26,13 +26,14 @@ $usuarios->match('/alta', function () use ($app) {
             'choices' => array(0 => 'estandar', 1 => 'administrador'),
             'expanded' => true,
         ))
+        ->add('orden')
         ->getForm();
     if ($app['request']->getMethod() == "POST" ) {
-        
+
         $form->bind($app['request']);
         if ($form->isValid()) {
             $data = $form->getData();
-           
+
             // La pass para Sabre
             $digesta1 = md5($data['username'].':SabreDAV:'.$data['password']);
             $data['digesta1'] = $digesta1;
@@ -45,7 +46,7 @@ $usuarios->match('/alta', function () use ($app) {
             $smw->addUser($data['username']);
             $mensaje = "Usuario creado";
             return $app->redirect($app['url_generator']->generate('usuarios'));
-            
+
         } else {
             $mensaje = "Formulario mal";
         }
@@ -72,6 +73,7 @@ $usuarios->match('/editar/{id}', function ($id) use ($app) {
             'choices' => array(0 => 'estandar', 1 => 'administrador'),
             'expanded' => true,
         ))
+        ->add('orden')
         ->getForm();
     if ($app['request']->getMethod() == "POST" ) {
         $form->bind($app['request']);
@@ -83,25 +85,26 @@ $usuarios->match('/editar/{id}', function ($id) use ($app) {
             // La pass para Sabre
             $digesta1 = md5($data['username'].':SabreDAV:'.$data['password']);
             $data['digesta1'] = $digesta1;
-            
+
             //Codificimaos la pass
             $password =  $app['security.encoder.digest']->encodePassword($data['password'], '');
             $data['password'] = $password;
-            
+
             //Lo editamos
-            var_dump($data);
-            $ret = $app['db']->update('users',$data,array('id'=>$id));
-            $mensaje = "Actualizado";
-            
-            
+            //var_dump($data);
+            /* $ret = $app['db']->update('users',$data,array('id'=>$id));
+            $mensaje = "Actualizado"; */
+            return $app->redirect($app['url_generator']->generate('usuarios'));
+
+
         } else {
             $mensaje = "Formulario mal";
         }
     } else {
         $mensaje = "vamos a editar";
-        
+
     }
-    
+
     return $app['twig']->render('usuarios-editar.html', array('id_usuario'=> $id ,'mensaje'=>$mensaje,'usuario'=>$usuario,'form' => $form->createView()));
 })
 ->bind('usuarios-editar')
@@ -117,7 +120,7 @@ $usuarios->match('/del/{id}', function ($id) use ($app) {
         //Borramos todos los eventos del sabre
         $smw->delUser($usuario['username']);
         //FIXME esto deberia ser poner como borrado
-        //Borramos todo los eventos de ocupacion 
+        //Borramos todo los eventos de ocupacion
         $app['db']->delete('ocupacion',array('user_id'=>$usuario['id']));
         //Borraos el usuario
         $app['db']->update('users',array('borrado'=>1),array('id'=>$usuario['id']));

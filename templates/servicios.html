@@ -34,23 +34,34 @@
 <div class="widget-content">
 
 <table class="table table-striped table-bordered table-hover">
-<thead>
-<tr>
-<th>Servicio</th><th>Nombre corto</th><th>Tipo de servicio</th><th>Estado</th><th>Acciones</th>
-</tr>
-</thead>
-<tbody>
-    
-    <!-- lista de usuarios -->
-
-{% for servicio in lista_servicios %}
-
-<tr>
-<td>{{servicio.nombre}}</td><td>{{servicio.nombre_corto}}</td><td>{{ servicio.tipo }} </td><td>{% if servicio.estado == 1 %} <button class="btn btn-primary btn-xs">Activo</button> {% else %} <button class="btn btn-danger btn-xs">Inactivo</button> {% endif %}</td><td><a href="{{ url('servicios-editar',{'id': servicio.id})}}"><button class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> </button></a> <a href="#"><button class="btn btn-xs btn-danger"><i class="fa fa-times-circle"></i> </button></a></td>
-</tr>
-
-{% endfor %}
-</tbody>
+    <thead>
+        <tr>
+        <th>Servicio</th><th>Nombre corto</th><th>Tipo de servicio</th><th>Estado</th><th>Orden</th><th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for servicio in lista_servicios %}
+        <tr>
+            <td>{{servicio.nombre}}</td>
+            <td>{{servicio.nombre_corto}}</td>
+            <td>{{ servicio.tipo }} </td>
+            <td>
+                {% if servicio.estado == 1 %} <button class="btn btn-primary btn-xs">Activo</button>
+                {% else %} <button class="btn btn-danger btn-xs">Inactivo</button>
+                {% endif %}
+            </td>
+            <td>{{ servicio.orden }} </td>
+            <td>
+                <a href="{{ url('servicios-editar',{'id': servicio.id})}}">
+                    <button class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> </button>
+                </a>
+                <a href="#">
+                    <button class="btn btn-xs btn-danger"><i class="fa fa-times-circle"></i> </button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 </div><!-- Fin widget-content -->
@@ -79,7 +90,7 @@
 </tr>
 </thead>
 <tbody>
-    
+
     <!-- lista de usuarios -->
 
 {% for tipo_servicio in lista_tipos_servicios %}
