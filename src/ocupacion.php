@@ -86,7 +86,7 @@ $ocupacion->match('/servicio/add/{id_user}/{id_servicio}/{fecha}/', function ($i
     $evento = $smw->addEvent($calendar_id,$servicio['nombre'],$servicio['nombre_corto'],$fecha);
     //Lo guardamos en BBDD
     $app['db']->insert('ocupacion',array('user_id'=>$id_user,'tipo_ocupacion'=>1,'tipo_servicio'=>$id_servicio,
-                        'fecha'=>$fecha,'caldav_id'=>$evento,'modificiacion_user_id'=>$editor['id']));
+                                         'fecha'=>$fecha,'caldav_id'=>$evento,'modificiacion_user_id'=>$editor['id']));
     return $app->json(array("estado"=> "ok",
         "mensaje"=> "Agregado la ocupación el ".$fecha." al usuario".$id_user." en el servicio ".$id_servicio." con el ID en caldav ".$evento));
 })
@@ -99,6 +99,12 @@ $ocupacion->match('/servicio/add/{id_user}/{id_servicio}/{fecha}/', function ($i
  * Eliminamos un día de ocupacion.
  */
 $ocupacion->match('/servicio/del/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$id_servicio,$fecha) use ($app) {
+    //vamos a ver quien esta editando
+    $token = $app['security']->getToken();
+    if (null !== $token) {
+        $editor = $token->getUser();
+    }
+    $editor = $app['db']->fetchAssoc('SELECT * FROM users WHERE username = ?',array($editor->getUsername()));
     $smw = new Etxea\SabreMW($app['db']);
     //Lo buscamos  en BBDD porque necesitamos el caldav_id
     $ocupacion = $app['db']->fetchAssoc('SELECT * FROM ocupacion WHERE user_id = ? AND tipo_ocupacion = 1 AND tipo_servicio = ? AND fecha = ?',array($id_user,$id_servicio,$fecha));
@@ -174,12 +180,19 @@ $ocupacion->get('/otros/{tipo}/{ano}/{mes}/', function ($tipo,$ano,$mes) use ($a
  * Añadimos un día de ocupacion.
  */
 $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id_usuario,$fecha) use ($app) {
+
     //Compramos si ya tiene ocupacion ese día
     $respuesta = $app['db']->fetchAssoc('SELECT count(*) AS ocupado FROM ocupacion WHERE user_id = ? AND fecha = ?',array($id_usuario,$fecha));
     if ($respuesta['ocupado'] > 0) {
         return $app->json(array("estado"=> "ko",
         "mensaje"=> "Ya tiene programado algún un servicio el día ".$fecha));
     }
+    //vamos a ver quien esta editando
+    $token = $app['security']->getToken();
+    if (null !== $token) {
+        $editor = $token->getUser();
+    }
+    $editor = $app['db']->fetchAssoc('SELECT * FROM users WHERE username = ?',array($editor->getUsername()));
     //Lo guardamos en el CalDAV
     $smw = new Etxea\SabreMW($app['db']);
     $user = $app['db']->fetchAssoc('SELECT * FROM users WHERE id = ?',array($id_usuario));
@@ -188,7 +201,8 @@ $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
     $calendar_id = $smw->getUserCalendar($user['username']);
     $evento = $smw->addEvent($calendar_id,$tipos[$tipo],$tipos[$tipo],$fecha);
     //Lo guardamos en BBDD
-    $app['db']->insert('ocupacion',array('user_id'=>$id_usuario, 'tipo_ocupacion' => 2,'tipo_otro'=>$tipo,'fecha'=>$fecha,'caldav_id'=>$evento));
+    $app['db']->insert('ocupacion',array('user_id'=>$id_usuario, 'tipo_ocupacion' => 2,'tipo_otro'=>$tipo,
+                                         'fecha'=>$fecha,'caldav_id'=>$evento,'modificiacion_user_id'=>$editor['id']));
     return $app->json(array("estado"=> "ok",
         "mensaje"=> "Agregado la ocupación de tipo ".$tipos[$tipo]." el ".$fecha." al usuario ".$id_usuario." con el ID en caldav ".$evento));
 })
@@ -201,6 +215,12 @@ $ocupacion->match('/otros/add/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id
  * Eliminamos un día de ocupacion.
  */
 $ocupacion->match('/otros/del/{tipo}/{id_usuario}/{fecha}/', function ($tipo,$id_usuario,$fecha) use ($app) {
+    //vamos a ver quien esta editando
+    $token = $app['security']->getToken();
+    if (null !== $token) {
+        $editor = $token->getUser();
+    }
+    $editor = $app['db']->fetchAssoc('SELECT * FROM users WHERE username = ?',array($editor->getUsername()));
     //FIXME esto a BBDD o conf!
     $tipos = array(1=>"Vacaciones",2=>"Graciables",3=>"Baja laboral",4=>"Congreso",5=>"Ivestigacion",6=>"Reunion");
     $smw = new Etxea\SabreMW($app['db']);
