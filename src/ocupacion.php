@@ -66,19 +66,27 @@ $ocupacion->get('/servicio/{ano}/{mes}/{dia}/{estatico}', function ($ano,$mes,$d
  */
 $ocupacion->match('/servicio/add/{id_user}/{id_servicio}/{fecha}/', function ($id_user,$id_servicio,$fecha) use ($app) {
     //Compramos si ya tiene ocupacion ese día
-    $respuesta = $app['db']->fetchAssoc('SELECT count(*) AS ocupado FROM ocupacion WHERE user_id = ? AND fecha = ?',array($id_usuario,$fecha));
+    $respuesta = $app['db']->fetchAssoc('SELECT count(*) AS ocupado FROM ocupacion WHERE user_id = ? AND fecha = ?',array($id_user,$fecha));
     if ($respuesta['ocupado'] > 0) {
         return $app->json(array("estado"=> "ko",
         "mensaje"=> "Ya tiene programado algúna vacacion, graciable,... el día ".$fecha));
     }
+    //vamos a ver quien esta editando
+    $token = $app['security']->getToken();
+    if (null !== $token) {
+        $editor = $token->getUser();
+    }
+    $editor = $app['db']->fetchAssoc('SELECT * FROM users WHERE username = ?',array($editor->getUsername()));
     //Lo guardamos en el CalDAV
     $smw = new Etxea\SabreMW($app['db']);
     $user = $app['db']->fetchAssoc('SELECT * FROM users WHERE id = ?',array($id_user));
     $servicio = $app['db']->fetchAssoc('SELECT * FROM servicios WHERE id = ?',array($id_servicio));
     $calendar_id = $smw->getUserCalendar($user['username']);
+    //var_dump($calendar_id);
     $evento = $smw->addEvent($calendar_id,$servicio['nombre'],$servicio['nombre_corto'],$fecha);
     //Lo guardamos en BBDD
-    $app['db']->insert('ocupacion',array('user_id'=>$id_user,'tipo_ocupacion'=>1,'tipo_servicio'=>$id_servicio,'fecha'=>$fecha,'caldav_id'=>$evento));
+    $app['db']->insert('ocupacion',array('user_id'=>$id_user,'tipo_ocupacion'=>1,'tipo_servicio'=>$id_servicio,
+                        'fecha'=>$fecha,'caldav_id'=>$evento,'modificiacion_user_id'=>$editor['id']));
     return $app->json(array("estado"=> "ok",
         "mensaje"=> "Agregado la ocupación el ".$fecha." al usuario".$id_user." en el servicio ".$id_servicio." con el ID en caldav ".$evento));
 })

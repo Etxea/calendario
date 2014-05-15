@@ -15,7 +15,7 @@ function cargar_tabla_vacaciones_mes(mes) {
     $.ajax({
         url: "/ocupacion/otros/1/{{ano}}/"+mes+"/",
         cache: false
-        
+
         })
         .done(function( data ) {
         $( "#div_tabla_vacaciones" ).append( data );
@@ -33,11 +33,11 @@ function cambio_check_ocupaciones(dia, user_id) {
         console.log("Quitamos un día festivo");
         url_peticion = "/ocupacion/otros/del/1/"+user_id+"/"+dia+"/";
     }
-    
+
     $.ajax({
         url: url_peticion,
         cache: false
-        
+
         })
         .done(function( data ) {
             alert(data.mensaje);
@@ -47,7 +47,7 @@ function cambio_check_ocupaciones(dia, user_id) {
                 $("#checkbox_"+dia+"_"+user_id).prop("checked",false);
                 console.log("Descheado!");
             }
-                
+
         }
     );
 }
@@ -64,7 +64,7 @@ function cambio_check_ocupaciones(dia, user_id) {
 <h2 class="pull-left">Vacaciones del año {{ ano }}</h2>
 
 
-		<!-- Muestra el Datapicker -->
+        <!-- Muestra el Datapicker -->
            <div id="reportrange" class="pull-right">
               <i class="fa fa-calendar"></i>
               <span></span> <b class="caret"></b>

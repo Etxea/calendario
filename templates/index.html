@@ -16,7 +16,7 @@ function cargar_tabla_ocupacion_estatica(ano,mes,dia) {
     $.ajax({
         url: "/ocupacion/servicio/"+ano+"/"+mes+"/"+dia+"/1",
         cache: false
-        
+
         })
         .done(function( data ) {
         $( "#div_tabla_ocupacion" ).append( data );
@@ -41,7 +41,7 @@ function cambiar_semana(dateString) {
 <div class="page-head">
 <h2 class="pull-left">Programado</h2>
 
-		<!-- Muestra el Datapicker -->
+        <!-- Muestra el Datapicker -->
         <i class="fa fa-calendar pull-right"></i><input class="pull-right" type="text" id="weekpicker" required="required" name="newsdate" />
         <!--
            <div id="reportrange" class="pull-right">
@@ -59,6 +59,7 @@ function cambiar_semana(dateString) {
 
 <div class="matter">
 <div class="container">
+
 
 <!-- Table -->
 

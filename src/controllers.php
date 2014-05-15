@@ -14,7 +14,7 @@ $app->get('/', function () use ($app) {
     $ano= date("Y");
     $semana_obj = $app['calendr']->getWeek($ano,1);
     $inicio_semana=$semana_obj->getBegin();
-    return $app['twig']->render('index.html', 
+    return $app['twig']->render('index.html',
         array('ano'=>$inicio_semana->format('Y'),'mes'=>$inicio_semana->format('m'),'dia'=>$inicio_semana->format('d')));
 })
 ->bind('homepage')
@@ -39,7 +39,7 @@ $app->get('/{ano}/{semana}/', function ($ano,$semana) use ($app) {
     $inicio_semana=$semana_obj->getBegin();
     return $app['twig']->render('index.html',
         array('ano'=>$inicio_semana->format('Y'),'mes'=>$inicio_semana->format('m'),'dia'=>$inicio_semana->format('d')));
-    
+
 })
 ;
 
@@ -49,7 +49,7 @@ $app->get('/{ano}/{semana}/', function ($ano,$semana) use ($app) {
 $app->get('/programacion-servicio/{ano}/{semana}/', function ($ano,$semana) use ($app) {
     $semana_obj = $app['calendr']->getWeek($ano,$semana);
     $inicio_semana=$semana_obj->getBegin();
-    return $app['twig']->render('programacion-servicio.html', 
+    return $app['twig']->render('programacion-servicio.html',
         array('ano'=>$inicio_semana->format('Y'),'mes'=>$inicio_semana->format('m'),'dia'=>$inicio_semana->format('d')));
 })
 ->assert('ano', '\d+') //nos aseguramos que nos pasan un decimal
@@ -64,7 +64,7 @@ $app->get('/programacion-servicio/', function () use ($app) {
     $inicio_semana=$semana_obj->getBegin();
     #var_dump($semana_obj);
     #var_dump($inicio_semana);
-    return $app['twig']->render('programacion-servicio.html', 
+    return $app['twig']->render('programacion-servicio.html',
         array('ano'=>$inicio_semana->format('Y'),'mes'=>$inicio_semana->format('m'),'dia'=>$inicio_semana->format('d')));
 })
 ->assert('ano', '\d+') //nos aseguramos que nos pasan un decimal
