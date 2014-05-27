@@ -22,14 +22,15 @@
         "symfony/twig-bridge": "~2.3",
         "twig/extensions": "*",
         "symfony/validator": "~2.3",
-	"sabre/vobject" : "~3.2",
+        "sabre/vobject" : "~3.2",
         "sabre/dav": "dev-slightly-better-browser",
         "doctrine/dbal": "2.4.*@dev",
         "yohang/calendr": "dev-master",
-        "etxea/sabremw": "dev-master" 
+        "etxea/sabremw": "dev-master"
     },
     "autoload": {
-        "psr-0": { "Uroges": "src/" }
+        "psr-0": { "Uroges": "./lib/" 
+		}
     },
     "extra": {
         "branch-alias": {
